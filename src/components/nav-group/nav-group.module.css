@@ -1,0 +1,14 @@
+.nav-side {
+  display: flex;
+  gap: 20px;
+}
+
+.left {
+  composes: nav-side;
+  justify-self: start;
+}
+
+.right {
+  composes: nav-side;
+  justify-self: end;
+}
