@@ -1,5 +1,6 @@
 :root {
   --page-padding-side: 10rem;
+  --page-padding-bottom: 2rem;
 
   --header-height: 88px;
   --header-background: #1c1c21;
@@ -7,4 +8,11 @@
   --link-background-hover: #2f2f37;
   --link-border-radius: 40px;
   --link-transition: all 0.3s ease-in;
+
+  --ingredient-card-image-width: 240px;
+  --ingredient-card-image-height: 120px;
+
+  --scrollbar-background-color: #2f2f37;
+  --scrollbar-thumb-color: #8585ad;
+  --scrollbar-thumb-radius: 8px;
 }

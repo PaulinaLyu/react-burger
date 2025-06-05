@@ -1,6 +1,6 @@
 export const BUN = "bun";
 export const SAUCE = "sauce";
-export const FILLING = "filling";
+export const FILLING = "main";
 
 export const categories = [
   { key: BUN, label: "Булки" },

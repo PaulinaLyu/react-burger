@@ -4,12 +4,12 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { categories, BUN } from "../../data/categories";
 import styles from "./burger-tabs.module.css";
 
-export const BurgerTabs = ({ сhangeTab }) => {
+export const BurgerTabs = ({ changeTab }) => {
   const [activeTab, setActiveTab] = React.useState(BUN);
 
   const handleChangeTab = (type) => {
     setActiveTab(type);
-    сhangeTab(type);
+    changeTab(type);
   };
 
   return (
