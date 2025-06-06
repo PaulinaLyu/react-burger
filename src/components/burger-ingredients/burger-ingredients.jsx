@@ -26,7 +26,7 @@ export const BurgerIngredients = ({ data }) => {
   };
 
   return (
-    <section className={styles.section}>
+    <section className={`${styles.section} pl-5`}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
       <BurgerTabs changeTab={changeTab} />

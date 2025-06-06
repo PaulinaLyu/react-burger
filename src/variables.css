@@ -1,5 +1,5 @@
 :root {
-  --page-padding-side: 10rem;
+  --page-padding-side: 6rem;
   --page-padding-bottom: 2rem;
 
   --header-height: 88px;
@@ -15,4 +15,6 @@
   --scrollbar-background-color: #2f2f37;
   --scrollbar-thumb-color: #8585ad;
   --scrollbar-thumb-radius: 8px;
+
+  --burger-constructor-item-bg: #1c1c21;
 }
