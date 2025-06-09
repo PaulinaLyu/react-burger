@@ -42,12 +42,7 @@ export const BurgerIngredients = ({ data }) => {
             </h2>
             <ul className={styles.content}>
               {groups[key]?.map((item) => (
-                <BurgerIngredientCard
-                  key={item._id}
-                  title={item.name}
-                  price={item.price}
-                  img={item.image}
-                />
+                <BurgerIngredientCard key={item._id} item={item} />
               ))}
             </ul>
           </div>
