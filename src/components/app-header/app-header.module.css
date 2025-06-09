@@ -1,0 +1,11 @@
+.header {
+  width: 100vw;
+  height: var(--header-height);
+  padding-left: var(--page-padding-side);
+  padding-right: var(--page-padding-side);
+  background-color: var(--header-background);
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}

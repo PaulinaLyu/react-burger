@@ -1,0 +1,19 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 272px;
+}
+
+.title {
+  text-align: center;
+}
+
+.image {
+  width: var(--ingredient-card-image-width);
+  height: var(--ingredient-card-image-height);
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+}

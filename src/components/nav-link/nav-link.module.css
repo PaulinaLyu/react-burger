@@ -1,0 +1,10 @@
+.link {
+  display: flex;
+  border-radius: var(--link-border-radius);
+  text-decoration: none;
+  transition: var(--link-transition);
+}
+
+.link:hover {
+  background: var(--link-background-hover);
+}
