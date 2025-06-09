@@ -1,0 +1,40 @@
+.modal {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+
+  background: var(--modal-background);
+  border-radius: var(--modal-border-radius);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.body {
+  text-align: center;
+}
+
+.title {
+  flex: 1 1 auto;
+  min-width: 600px;
+}
+
+.close {
+  cursor: pointer;
+}
+
+.close:hover {
+  opacity: 0.5;
+}

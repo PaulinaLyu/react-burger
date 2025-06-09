@@ -2,5 +2,5 @@
   width: 100vw;
   height: 100vh;
 
-  background-color: #131316;
+  background-color: var(--page-background);
 }
