@@ -17,4 +17,7 @@
   --scrollbar-thumb-radius: 8px;
 
   --burger-constructor-item-bg: #1c1c21;
+
+  --modal-overlay-background: #000000;
+  --modal-overlay-opacity: 0.6;
 }
