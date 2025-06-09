@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { ModalOverlay } from "../modal-overlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEscapeKey } from "../../hooks/useEscapeKey";
+import { useEscapeKey } from "../../hooks";
 import styles from "./modal.module.css";
 
 export const Modal = ({ title = "", children, onClose }) => {
