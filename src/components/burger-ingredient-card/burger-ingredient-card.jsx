@@ -1,20 +1,11 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
 import styles from "./burger-ingredient-card.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IngredientDetails } from "../ingredient-details";
 import { dataTypes } from "../../data/data-types";
 
-export const BurgerIngredientCard = ({ item }) => {
-  const [isShowDetailModal, setIsShowDetailModal] = useState(false);
-
-  const showDetailModal = () => setIsShowDetailModal(true);
-  const hideDetailModal = () => setIsShowDetailModal(false);
-
+export const BurgerIngredientCard = ({ item, onClick }) => {
   return (
-    <li
-      className={`${styles.card} mt-6 mb-8 ml-3 mr-2`}
-      onClick={showDetailModal}
-    >
+    <li className={`${styles.card} mt-6 mb-8 ml-3 mr-2`} onClick={onClick}>
       <img
         className={`${styles.image} ml-4 mr-4 mb-1`}
         src={item.image}
@@ -27,13 +18,11 @@ export const BurgerIngredientCard = ({ item }) => {
       <div className={`${styles.title} text text_type_main-default`}>
         {item.name}
       </div>
-      {isShowDetailModal && (
-        <IngredientDetails item={item} onClose={hideDetailModal} />
-      )}
     </li>
   );
 };
 
 BurgerIngredientCard.propTypes = {
   item: dataTypes.isRequired,
+  onClick: PropTypes.func.isRequired,
 };

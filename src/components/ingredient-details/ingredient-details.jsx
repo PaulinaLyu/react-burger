@@ -14,7 +14,7 @@ export const IngredientDetails = ({ item, onClose }) => {
 
   return (
     <Modal title="Детали ингридиента" onClose={onClose}>
-      <section>
+      <main>
         <figure className="mb-4">
           <img
             src={item.image_large}
@@ -34,7 +34,7 @@ export const IngredientDetails = ({ item, onClose }) => {
             />
           ))}
         </article>
-      </section>
+      </main>
     </Modal>
   );
 };
