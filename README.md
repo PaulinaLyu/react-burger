@@ -19,47 +19,48 @@ npx create-react-app my-app --template typescript
 
 ## Структура проекта
 
-components/ — все UI-компоненты и их стили:
--App
+<b> `components/` </b> — все UI-компоненты и их стили:
+ - <i> `App` </i>
 
--AppHeader
+ - <i> `AppHeader` </i>
 
--BurgerIngredients
+ - <i> `BurgerIngredients` </i>
 
--BurgerConstructor
+ - <i> `BurgerConstructor` </i>
 
--Modal
+ - <i> `Modal` </i>
 
--ModalOverlay
+ - <i> `ModalOverlay` </i>
 
--OrderDetails
+ - <i> `OrderDetails` </i>
 
--IngredientDetails
+ - <i> `IngredientDetails` </i>
 
-fonts/ — сторонние шрифты
+<b> `fonts/` </b> — сторонние шрифты
 
-data/ — моковые данные
+<b> `data/` </b> — моковые данные
 
-hooks/ — кастомные хуки
+<b> `hooks/` </b> — кастомные хуки
 
-images/ — изображения
+<b> `images/` </b> — изображения
 
-pages/ — страницы
+<b> `pages/` </b> — страницы
 
-README.md
+<b> `README.md` </b>
 
-.gitignore
+<b> `.gitignore` </b>
+
 
 ## Основной функционал
 
-- Компонент <pre> `AppHeader` </pre> — навигация с иконками и логотипом
+- Компонент <b> `AppHeader` </b> — навигация с иконками и логотипом
 
-- Компонент <pre> `BurgerIngredients` </pre> — отображает список ингредиентов с категориями и счётчиками
+- Компонент <b> `BurgerIngredients` </b> — отображает список ингредиентов с категориями и счётчиками
 
-- Компонент <pre> `BurgerConstructor` </pre> — сборка бургера, отображение стоимости и оформление заказа
+- Компонент <b> `BurgerConstructor` </b> — сборка бургера, отображение стоимости и оформление заказа
 
-- Компоненты <pre> `IngredientDetails` </pre> и <pre> `OrderDetails` </pre> — отображаются в модальных окнах
+- Компоненты <b> `IngredientDetails` </b> и <b> `OrderDetails` </b> — отображаются в модальных окнах
 
-- Компонент <pre> `Modal` </pre> — универсальное модальное окно с возможностью закрытия по "Esc", оверлею или кнопке
+- Компонент <b> `Modal` </b> — универсальное модальное окно с возможностью закрытия по "Esc", оверлею или кнопке
 
-- Используется <pre> `ModalOverlay` </pre> и портал для рендеринга модального окна
+- Используется <b> `ModalOverlay` </b> и портал для рендеринга модального окна
