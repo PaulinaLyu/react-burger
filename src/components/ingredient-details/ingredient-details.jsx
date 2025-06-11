@@ -1,10 +1,8 @@
-import PropTypes from "prop-types";
-import { Modal } from "../modal";
 import { NutritionInfo } from "../nutrition-info";
 import { dataTypes } from "../../data/data-types";
 import styles from "./ingredient-details.module.css";
 
-export const IngredientDetails = ({ item, onClose }) => {
+export const IngredientDetails = ({ item }) => {
   const nutrients = [
     { label: "Калории, ккал", value: item.calories },
     { label: "Белки, г", value: item.proteins },
@@ -13,33 +11,30 @@ export const IngredientDetails = ({ item, onClose }) => {
   ];
 
   return (
-    <Modal title="Детали ингридиента" onClose={onClose}>
-      <main>
-        <figure className="mb-4">
-          <img
-            src={item.image_large}
-            alt={`Изображение ингредиента ${item.name}`}
-          />
-          <figcaption className="text text_type_main-medium mb-8">
-            {item.name}
-          </figcaption>
-        </figure>
+    <main>
+      <figure className="mb-4">
+        <img
+          src={item.image_large}
+          alt={`Изображение ингредиента ${item.name}`}
+        />
+        <figcaption className="text text_type_main-medium mb-8">
+          {item.name}
+        </figcaption>
+      </figure>
 
-        <article className={`${styles.nutrition} mb-15 mr-10 ml-10`}>
-          {nutrients.map((nutrient, index) => (
-            <NutritionInfo
-              key={index}
-              label={nutrient.label}
-              value={nutrient.value}
-            />
-          ))}
-        </article>
-      </main>
-    </Modal>
+      <article className={`${styles.nutrition} mb-15 mr-10 ml-10`}>
+        {nutrients.map((nutrient, index) => (
+          <NutritionInfo
+            key={index}
+            label={nutrient.label}
+            value={nutrient.value}
+          />
+        ))}
+      </article>
+    </main>
   );
 };
 
 IngredientDetails.propTypes = {
   item: dataTypes.isRequired,
-  onClose: PropTypes.func.isRequired,
 };

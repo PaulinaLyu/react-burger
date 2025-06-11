@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import img from "../../images/done.png";
-import { Modal } from "../modal";
 import styles from "./order-details.module.css";
 
-export const OrderDetails = ({ orderNumber, onClose }) => {
+export const OrderDetails = ({ orderNumber }) => {
   return (
-    <Modal onClose={onClose}>
+    <>
       <main className="mb-15">
         <h2 className={`${styles.glow} text text_type_digits-large mb-8 mt-8`}>
           {orderNumber}
@@ -23,11 +22,10 @@ export const OrderDetails = ({ orderNumber, onClose }) => {
           Дождитесь готовности на орбитальной станции
         </p>
       </footer>
-    </Modal>
+    </>
   );
 };
 
 OrderDetails.propTypes = {
   orderNumber: PropTypes.string.isRequired,
-  onClose: PropTypes.func.isRequired,
 };

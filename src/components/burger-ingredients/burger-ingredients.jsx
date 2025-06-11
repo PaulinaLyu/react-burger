@@ -6,6 +6,7 @@ import { IngredientDetails } from "../ingredient-details";
 import styles from "./burger-ingredients.module.css";
 import { categories } from "../../data/categories";
 import { dataTypes } from "../../data/data-types";
+import { Modal } from "../modal";
 
 export const BurgerIngredients = ({ data }) => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -26,6 +27,8 @@ export const BurgerIngredients = ({ data }) => {
   const changeTab = (type) => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const hideDetailsModal = () => setSelectedItem(null);
 
   return (
     <section className={`${styles.section} pl-5`}>
@@ -55,10 +58,9 @@ export const BurgerIngredients = ({ data }) => {
               ))}
             </ul>
             {selectedItem && (
-              <IngredientDetails
-                item={selectedItem}
-                onClose={() => setSelectedItem(null)}
-              />
+              <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
+                <IngredientDetails item={selectedItem} />
+              </Modal>
             )}
           </div>
         ))}

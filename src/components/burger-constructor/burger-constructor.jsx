@@ -11,6 +11,7 @@ import { dataTypes } from "../../data/data-types";
 import { BUN } from "../../data/categories";
 import { ORDER_NUMBER } from "../../contants";
 import { OrderDetails } from "../order-details";
+import { Modal } from "../modal";
 
 export const BurgerConstructor = ({ data }) => {
   const [isShowOrderModal, setIsShowOrderModal] = useState(false);
@@ -73,7 +74,9 @@ export const BurgerConstructor = ({ data }) => {
           Оформить заказ
         </Button>
         {isShowOrderModal && (
-          <OrderDetails orderNumber={ORDER_NUMBER} onClose={hideOrderModal} />
+          <Modal onClose={hideOrderModal}>
+            <OrderDetails orderNumber={ORDER_NUMBER} />
+          </Modal>
         )}
       </div>
     </section>
