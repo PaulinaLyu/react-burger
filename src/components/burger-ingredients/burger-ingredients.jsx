@@ -1,22 +1,25 @@
-import React from "react";
+import { useState, useMemo, useRef, createRef } from "react";
 import PropTypes from "prop-types";
+import { BurgerTabs } from "../burger-tabs";
+import { BurgerIngredientCard } from "../burger-ingredient-card";
+import { IngredientDetails } from "../ingredient-details";
 import styles from "./burger-ingredients.module.css";
 import { categories } from "../../data/categories";
 import { dataTypes } from "../../data/data-types";
-import { BurgerTabs } from "../burger-tabs";
-import { BurgerIngredientCard } from "../burger-ingredient-card";
+import { Modal } from "../modal";
 
 export const BurgerIngredients = ({ data }) => {
-  const groups = React.useMemo(() => {
+  const [selectedItem, setSelectedItem] = useState(null);
+  const groups = useMemo(() => {
     return categories.reduce((acc, { key }) => {
       acc[key] = data.filter((item) => item.type === key);
       return acc;
     }, {});
   }, [data]);
 
-  const headersRef = React.useRef(
+  const headersRef = useRef(
     categories.reduce((acc, { key }) => {
-      acc[key] = React.createRef();
+      acc[key] = createRef();
       return acc;
     }, {})
   );
@@ -24,6 +27,8 @@ export const BurgerIngredients = ({ data }) => {
   const changeTab = (type) => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const hideDetailsModal = () => setSelectedItem(null);
 
   return (
     <section className={`${styles.section} pl-5`}>
@@ -33,7 +38,10 @@ export const BurgerIngredients = ({ data }) => {
 
       <div className={styles.list}>
         {categories.map(({ key, label }, index) => (
-          <div className={categories.length !== index + 1 && "mb-10"} key={key}>
+          <div
+            className={categories.length !== index + 1 ? "mb-10" : ""}
+            key={key}
+          >
             <h2
               className="text text_type_main-medium mt-2"
               ref={headersRef.current[key]}
@@ -44,12 +52,16 @@ export const BurgerIngredients = ({ data }) => {
               {groups[key]?.map((item) => (
                 <BurgerIngredientCard
                   key={item._id}
-                  title={item.name}
-                  price={item.price}
-                  img={item.image}
+                  item={item}
+                  onClick={() => setSelectedItem(item)}
                 />
               ))}
             </ul>
+            {selectedItem && (
+              <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
+                <IngredientDetails item={selectedItem} />
+              </Modal>
+            )}
           </div>
         ))}
       </div>

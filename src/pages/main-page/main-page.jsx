@@ -4,9 +4,8 @@ import {
   BurgerConstructor,
 } from "../../components";
 import styles from "./main-page.module.css";
-import { data } from "../../data/data";
 
-export const MainPage = () => {
+export const MainPage = ({ data }) => {
   return (
     <>
       {" "}

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -9,8 +9,16 @@ import {
 import styles from "./burger-constructor.module.css";
 import { dataTypes } from "../../data/data-types";
 import { BUN } from "../../data/categories";
+import { ORDER_NUMBER } from "../../contants";
+import { OrderDetails } from "../order-details";
+import { Modal } from "../modal";
 
 export const BurgerConstructor = ({ data }) => {
+  const [isShowOrderModal, setIsShowOrderModal] = useState(false);
+
+  const showOrderModal = () => setIsShowOrderModal(true);
+  const hideOrderModal = () => setIsShowOrderModal(false);
+
   const ingredients = useMemo(
     () => data.filter((item) => item.type !== BUN),
     [data]
@@ -62,9 +70,14 @@ export const BurgerConstructor = ({ data }) => {
         <div className={`${styles.icon} ml-5 mr-10`}>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary">
+        <Button htmlType="button" type="primary" onClick={showOrderModal}>
           Оформить заказ
         </Button>
+        {isShowOrderModal && (
+          <Modal onClose={hideOrderModal}>
+            <OrderDetails orderNumber={ORDER_NUMBER} />
+          </Modal>
+        )}
       </div>
     </section>
   );
