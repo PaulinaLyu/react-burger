@@ -7,8 +7,10 @@ import styles from "./burger-ingredients.module.css";
 import { categories } from "../../data/categories";
 import { dataTypes } from "../../data/data-types";
 import { Modal } from "../modal";
+import { Loader } from "../loader";
+import { NO_DATA } from "../../contants";
 
-export const BurgerIngredients = ({ data }) => {
+export const BurgerIngredients = ({ data, isLoadingData }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const groups = useMemo(() => {
     return categories.reduce((acc, { key }) => {
@@ -34,37 +36,45 @@ export const BurgerIngredients = ({ data }) => {
     <section className={`${styles.section} pl-5`}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
-      <BurgerTabs changeTab={changeTab} />
-
-      <div className={styles.list}>
-        {categories.map(({ key, label }, index) => (
-          <div
-            className={categories.length !== index + 1 ? "mb-10" : ""}
-            key={key}
-          >
-            <h2
-              className="text text_type_main-medium mt-2"
-              ref={headersRef.current[key]}
-            >
-              {label}
-            </h2>
-            <ul className={styles.content}>
-              {groups[key]?.map((item) => (
-                <BurgerIngredientCard
-                  key={item._id}
-                  item={item}
-                  onClick={() => setSelectedItem(item)}
-                />
-              ))}
-            </ul>
-            {selectedItem && (
-              <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
-                <IngredientDetails item={selectedItem} />
-              </Modal>
-            )}
+      {isLoadingData ? (
+        <Loader />
+      ) : (
+        <>
+          {" "}
+          <BurgerTabs changeTab={changeTab} />
+          <div className={styles.list}>
+            {categories.map(({ key, label }, index) => (
+              <div
+                className={categories.length !== index + 1 ? "mb-10" : ""}
+                key={key}
+              >
+                <h2
+                  className="text text_type_main-medium mt-2"
+                  ref={headersRef.current[key]}
+                >
+                  {label}
+                </h2>
+                <ul className={styles.content}>
+                  {groups[key]?.length > 0
+                    ? groups[key]?.map((item) => (
+                        <BurgerIngredientCard
+                          key={item._id}
+                          item={item}
+                          onClick={() => setSelectedItem(item)}
+                        />
+                      ))
+                    : NO_DATA}
+                </ul>
+                {selectedItem && (
+                  <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
+                    <IngredientDetails item={selectedItem} />
+                  </Modal>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </section>
   );
 };
