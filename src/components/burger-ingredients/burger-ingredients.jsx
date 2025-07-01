@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, createRef } from "react";
+import { useMemo, useRef, createRef } from "react";
 import PropTypes from "prop-types";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
@@ -9,9 +9,18 @@ import { dataTypes } from "../../data/data-types";
 import { Modal } from "../modal";
 import { Loader } from "../loader";
 import { NO_DATA } from "../../contants";
+import { useAppSelector, useAppDispatch } from "../../hooks";
+import {
+  resetCurrentIngredient,
+  setCurrentIngredient,
+} from "../../services/reducers/ingredient-details.reducer";
 
 export const BurgerIngredients = ({ data, isLoadingData }) => {
-  const [selectedItem, setSelectedItem] = useState(null);
+  const dispatch = useAppDispatch();
+  const { currentIngredient } = useAppSelector(
+    (state) => state.ingredientDetails
+  );
+
   const groups = useMemo(() => {
     return categories.reduce((acc, { key }) => {
       acc[key] = data.filter((item) => item.type === key);
@@ -30,7 +39,7 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const hideDetailsModal = () => setSelectedItem(null);
+  const hideDetailsModal = () => dispatch(resetCurrentIngredient());
 
   return (
     <section className={`${styles.section} pl-5`}>
@@ -60,14 +69,14 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
                         <BurgerIngredientCard
                           key={item._id}
                           item={item}
-                          onClick={() => setSelectedItem(item)}
+                          onClick={() => dispatch(setCurrentIngredient(item))}
                         />
                       ))
                     : NO_DATA}
                 </ul>
-                {selectedItem && (
+                {currentIngredient && (
                   <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
-                    <IngredientDetails item={selectedItem} />
+                    <IngredientDetails item={currentIngredient} />
                   </Modal>
                 )}
               </div>
