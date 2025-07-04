@@ -1,14 +1,11 @@
 import { useEffect, useState, Fragment } from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
-import { dataTypes } from "../../data/data-types";
 import { BUN, SAUCE, FILLING } from "../../data/categories";
-import { ORDER_NUMBER } from "../../contants";
 import { OrderDetails } from "../order-details";
 import { Modal } from "../modal";
 import { BurgerConstructorIngredient } from "../burger-constructor-ingredient";
@@ -20,17 +17,31 @@ import {
   setTotalPrice,
   addIngredient,
   removeIngredient,
+  resetConstructor,
 } from "../../services/reducers/burger-constructor.reducer";
+import { resetOrder } from "../../services/reducers/order.reducer";
+import { createBurderOrder } from "../../services/actions";
 
-export const BurgerConstructor = ({ data }) => {
-  const [isShowOrderModal, setIsShowOrderModal] = useState(false);
-  const showOrderModal = () => setIsShowOrderModal(true);
-  const hideOrderModal = () => setIsShowOrderModal(false);
-
+export const BurgerConstructor = () => {
   const dispatch = useAppDispatch();
+  const [isShowOrderModal, setIsShowOrderModal] = useState(false);
+
+  const { orderNumber } = useAppSelector((state) => state.order);
   const { bun, ingredients, totalPrice } = useAppSelector(
     (state) => state.burgerConstructor
   );
+  const hideOrderModal = () => {
+    setIsShowOrderModal(false);
+    dispatch(resetConstructor());
+    dispatch(resetOrder());
+  };
+
+  const createNewOrder = () => {
+    const ingredientsIds = ingredients.map((ingred) => ingred._id);
+    const prepareOrder = [bun._id, ...ingredientsIds];
+    dispatch(createBurderOrder(prepareOrder));
+    setIsShowOrderModal(true);
+  };
 
   const [, dropTargetBunTop] = useDrop({
     accept: BUN,
@@ -122,19 +133,20 @@ export const BurgerConstructor = ({ data }) => {
         <div className={`${styles.icon} ml-5 mr-10`}>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" onClick={showOrderModal}>
+        <Button
+          disabled={!bun && ingredients?.lenght === 0}
+          htmlType="button"
+          type="primary"
+          onClick={createNewOrder}
+        >
           Оформить заказ
         </Button>
-        {isShowOrderModal && (
+        {isShowOrderModal && orderNumber && (
           <Modal onClose={hideOrderModal}>
-            <OrderDetails orderNumber={ORDER_NUMBER} />
+            <OrderDetails orderNumber={orderNumber} />
           </Modal>
         )}
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
 };

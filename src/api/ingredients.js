@@ -1,6 +1,4 @@
-const DOMAIN = "https://norma.nomoreparties.space";
-const INGREDIENTS_API = "/api/ingredients";
-const STATUS_OK = 200;
+import { STATUS_OK, DOMAIN, INGREDIENTS_API } from "../contants";
 
 export const fetchIngredients = async () => {
   const response = await fetch(`${DOMAIN}${INGREDIENTS_API}`);
