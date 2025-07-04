@@ -133,14 +133,11 @@ export const BurgerConstructor = () => {
         <div className={`${styles.icon} ml-5 mr-10`}>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
-          disabled={!bun && ingredients?.lenght === 0}
-          htmlType="button"
-          type="primary"
-          onClick={createNewOrder}
-        >
-          Оформить заказ
-        </Button>
+        {bun && ingredients?.length > 0 && (
+          <Button htmlType="button" type="primary" onClick={createNewOrder}>
+            Оформить заказ
+          </Button>
+        )}
         {isShowOrderModal && orderNumber && (
           <Modal onClose={hideOrderModal}>
             <OrderDetails orderNumber={orderNumber} />
