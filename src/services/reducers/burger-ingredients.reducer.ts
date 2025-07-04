@@ -33,7 +33,6 @@ export const burgerIngredientsSlice = createSlice({
         isFulfilled(fetchBurgerIngredients),
         (state, action: PayloadAction<Ingredient[]>) => {
           state.isLoading = false;
-
           state.data = action.payload;
         }
       )

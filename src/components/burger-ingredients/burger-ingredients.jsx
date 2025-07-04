@@ -90,4 +90,5 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
 
 BurgerIngredients.propTypes = {
   data: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
+  isLoadingData: PropTypes.bool,
 };

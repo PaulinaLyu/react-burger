@@ -8,7 +8,6 @@
 }
 
 .list {
-  flex-grow: 1;
   padding: 0;
   overflow-y: auto;
   scrollbar-color: var(--scrollbar-thumb-color)
@@ -25,13 +24,6 @@
   background-color: var(--scrollbar-background-color);
 }
 
-.item {
-  width: 100%;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-
 .editor {
   padding: 0;
   display: flex;
@@ -40,12 +32,8 @@
   overflow: hidden;
 }
 
-.ingredient {
-  background: var(--burger-constructor-item-bg);
-}
-
 .bun {
-  composes: ingredient;
+  background: var(--burger-constructor-item-bg);
   width: 100%;
 }
 

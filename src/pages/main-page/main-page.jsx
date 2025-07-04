@@ -19,7 +19,6 @@ export const MainPage = () => {
   }, [dispatch]);
   return (
     <>
-      {" "}
       <AppHeader />
       <main className={styles.main}>
         <BurgerIngredients data={data} isLoadingData={isLoading} />
