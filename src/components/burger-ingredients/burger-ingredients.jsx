@@ -1,4 +1,4 @@
-import { useMemo, useRef, createRef } from "react";
+import { useMemo, useRef, createRef, useState } from "react";
 import PropTypes from "prop-types";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
@@ -9,6 +9,7 @@ import { dataTypes } from "../../data/data-types";
 import { Modal } from "../modal";
 import { Loader } from "../loader";
 import { NO_DATA } from "../../contants";
+import { BUN } from "../../data/categories";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import {
   resetCurrentIngredient,
@@ -16,6 +17,7 @@ import {
 } from "../../services/reducers/ingredient-details.reducer";
 
 export const BurgerIngredients = ({ data, isLoadingData }) => {
+  const [currentTab, setCurrentTab] = useState(BUN);
   const dispatch = useAppDispatch();
   const { currentIngredient } = useAppSelector(
     (state) => state.ingredientDetails
@@ -58,6 +60,25 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
 
   const hideDetailsModal = () => dispatch(resetCurrentIngredient());
 
+  const handleScroll = (e) => {
+    const containerTop = e.currentTarget.getBoundingClientRect().top;
+    const distance = [];
+
+    for (let header of Object.values(headersRef.current)) {
+      const rect = header.current.getBoundingClientRect();
+      const distanceToTop = Math.abs(rect.top - containerTop);
+      distance.push(distanceToTop);
+    }
+
+    const min = Math.min(...distance);
+    const minIndex = distance.indexOf(min);
+    const newTab = Object.keys(headersRef.current)[minIndex];
+
+    if (currentTab !== newTab) {
+      setCurrentTab(newTab);
+    }
+  };
+
   return (
     <section className={`${styles.section} pl-5`}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
@@ -67,8 +88,8 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
       ) : (
         <>
           {" "}
-          <BurgerTabs changeTab={changeTab} />
-          <div className={styles.list}>
+          <BurgerTabs activeTab={currentTab} changeTab={changeTab} />
+          <div className={styles.list} onScroll={handleScroll}>
             {categories.map(({ key, label }, index) => (
               <div
                 className={categories.length !== index + 1 ? "mb-10" : ""}
