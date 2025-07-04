@@ -20,6 +20,9 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
   const { currentIngredient } = useAppSelector(
     (state) => state.ingredientDetails
   );
+  const { bun, ingredients } = useAppSelector(
+    (state) => state.burgerConstructor
+  );
 
   const groups = useMemo(() => {
     return categories.reduce((acc, { key }) => {
@@ -27,6 +30,20 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
       return acc;
     }, {});
   }, [data]);
+
+  const countData = useMemo(() => {
+    const result = {};
+    if (bun) {
+      result[bun._id] = 2;
+    }
+    for (let item of ingredients) {
+      if (!(item._id in result)) {
+        result[item._id] = 0;
+      }
+      result[item._id]++;
+    }
+    return result;
+  }, [bun, ingredients]);
 
   const headersRef = useRef(
     categories.reduce((acc, { key }) => {
@@ -69,6 +86,7 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
                         <BurgerIngredientCard
                           key={item._id}
                           item={item}
+                          count={countData[item._id]}
                           onClick={() => dispatch(setCurrentIngredient(item))}
                         />
                       ))

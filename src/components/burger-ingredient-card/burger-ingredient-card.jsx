@@ -1,10 +1,13 @@
 import PropTypes from "prop-types";
 import styles from "./burger-ingredient-card.module.css";
 import { useDrag } from "react-dnd";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  CurrencyIcon,
+  Counter,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { dataTypes } from "../../data/data-types";
 
-export const BurgerIngredientCard = ({ item, onClick }) => {
+export const BurgerIngredientCard = ({ item, onClick, count }) => {
   const [{ opacity }, dragRef] = useDrag({
     type: item.type,
     item: item,
@@ -32,6 +35,9 @@ export const BurgerIngredientCard = ({ item, onClick }) => {
       <div className={`${styles.title} text text_type_main-default`}>
         {item.name}
       </div>
+      {count > 0 && (
+        <Counter count={count} size="default" extraClass={styles.count} />
+      )}
     </li>
   );
 };
@@ -39,4 +45,5 @@ export const BurgerIngredientCard = ({ item, onClick }) => {
 BurgerIngredientCard.propTypes = {
   item: dataTypes.isRequired,
   onClick: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired,
 };
