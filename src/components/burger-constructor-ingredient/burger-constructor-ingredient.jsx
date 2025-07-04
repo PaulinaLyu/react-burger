@@ -31,7 +31,7 @@ export const BurgerConstructorIngredient = ({ item, index, onDelete }) => {
   drag(drop(ref));
 
   return (
-    <li className={`${styles.item} mt-4`}>
+    <li className={`${styles.item} mt-4`} ref={ref}>
       <DragIcon type="primary" />
       <ConstructorElement
         text={item.name}
