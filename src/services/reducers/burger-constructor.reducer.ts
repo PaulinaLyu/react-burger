@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Ingredient } from "../../models";
+import { Ingredient, IngredientWithUniqueId } from "../../models";
+import uuid4 from "uuid4";
 
 export interface BurgerConstructorState {
   bun: Ingredient | null;
-  ingredients: Ingredient[];
+  ingredients: IngredientWithUniqueId[];
   totalPrice: number;
 }
 
@@ -23,21 +24,25 @@ export const BurgerConstructorSlice = createSlice({
     setTotalPrice(state, action: PayloadAction<number>) {
       state.totalPrice = action.payload;
     },
-    addIngredient(state, action: PayloadAction<Ingredient>) {
-      state.ingredients = [action.payload, ...state.ingredients];
+    addIngredient: {
+      reducer: (state, action: PayloadAction<IngredientWithUniqueId>) => {
+        state.ingredients = [action.payload, ...state.ingredients];
+      },
+      prepare: (ingredient: Ingredient) => {
+        return { payload: { ...ingredient, uniqueId: uuid4() } };
+      },
     },
     removeIngredient(state, action: PayloadAction<string>) {
       state.ingredients = state.ingredients.filter(
-        (ingredient) => ingredient._id !== action.payload
+        (ingredient) => ingredient.uniqueId !== action.payload
       );
     },
     swapIngredients(state, action: PayloadAction<[number, number]>) {
-      const newIngredients = [...state.ingredients];
-      [newIngredients[action.payload[0]], newIngredients[action.payload[1]]] = [
-        newIngredients[action.payload[1]],
-        newIngredients[action.payload[0]],
-      ];
-      state.ingredients = newIngredients;
+      const [dragIndex, hoverIndex] = action.payload;
+      const draggedItem = state.ingredients[dragIndex];
+
+      state.ingredients.splice(dragIndex, 1);
+      state.ingredients.splice(hoverIndex, 0, draggedItem);
     },
     resetConstructor() {
       return initialState;

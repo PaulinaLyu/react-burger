@@ -23,7 +23,7 @@ export const BurgerConstructorIngredient = ({ item, index, onDelete }) => {
     accept: "sort",
     drop(item) {
       if (index !== item.index) {
-        dispatch(swapIngredients([index, item.index]));
+        dispatch(swapIngredients([item.index, index]));
       }
     },
   });

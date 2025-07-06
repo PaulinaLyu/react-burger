@@ -1,4 +1,4 @@
-export type Ingredient = {
+export interface Ingredient {
   _id: string;
   name: string;
   type: string;
@@ -11,4 +11,8 @@ export type Ingredient = {
   image_mobile: string;
   image_large: string;
   __v: number;
-};
+}
+
+export interface IngredientWithUniqueId extends Ingredient {
+  uniqueId: string;
+}

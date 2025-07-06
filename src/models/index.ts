@@ -1,1 +1,1 @@
-export { type Ingredient } from "./Ingredient";
+export { type Ingredient, type IngredientWithUniqueId } from "./Ingredient";

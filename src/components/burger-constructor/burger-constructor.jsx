@@ -104,7 +104,7 @@ export const BurgerConstructor = () => {
         <ul className={`${styles.list} mt-4 mb-4`} ref={dropTargetIngredient}>
           {ingredients && ingredients.length > 0 ? (
             ingredients.map((item, index) => (
-              <Fragment key={item._id || index}>
+              <Fragment key={item.uniqueId}>
                 <BurgerConstructorIngredient
                   item={item}
                   index={index}
