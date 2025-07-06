@@ -1,11 +1,9 @@
 import { useMemo, useRef, createRef, useState } from "react";
-import PropTypes from "prop-types";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
 import { IngredientDetails } from "../ingredient-details";
 import styles from "./burger-ingredients.module.css";
 import { categories } from "../../data/categories";
-import { dataTypes } from "../../data/data-types";
 import { Modal } from "../modal";
 import { Loader } from "../loader";
 import { NO_DATA } from "../../contants";
@@ -16,9 +14,12 @@ import {
   setCurrentIngredient,
 } from "../../services/reducers/ingredient-details.reducer";
 
-export const BurgerIngredients = ({ data, isLoadingData }) => {
+export const BurgerIngredients = () => {
   const [currentTab, setCurrentTab] = useState(BUN);
   const dispatch = useAppDispatch();
+  const { data, isLoadingData } = useAppSelector(
+    (state) => state.burgerIngredients
+  );
   const { currentIngredient } = useAppSelector(
     (state) => state.ingredientDetails
   );
@@ -125,9 +126,4 @@ export const BurgerIngredients = ({ data, isLoadingData }) => {
       )}
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
-  isLoadingData: PropTypes.bool,
 };

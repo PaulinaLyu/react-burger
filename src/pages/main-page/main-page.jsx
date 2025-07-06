@@ -5,13 +5,10 @@ import {
   BurgerConstructor,
 } from "../../components";
 import styles from "./main-page.module.css";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { fetchBurgerIngredients } from "../../services/actions";
 
 export const MainPage = () => {
-  const { data, isLoading } = useAppSelector(
-    (state) => state.burgerIngredients
-  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -21,8 +18,8 @@ export const MainPage = () => {
     <>
       <AppHeader />
       <main className={styles.main}>
-        <BurgerIngredients data={data} isLoadingData={isLoading} />
-        <BurgerConstructor data={data} />
+        <BurgerIngredients />
+        <BurgerConstructor />
       </main>
     </>
   );
