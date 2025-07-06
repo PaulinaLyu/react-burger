@@ -1,8 +1,6 @@
 import { STATUS_OK } from "../contants";
 
-export const request = async (url, options = {}) => {
-  const response = await fetch(url, options);
-
+export const checkResponse = async (response) => {
   if (response.status !== STATUS_OK) {
     throw new Error(`HTTP ошибка: ${response.status}: ${response.statusText}`);
   }

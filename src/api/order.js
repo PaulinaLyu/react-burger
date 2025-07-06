@@ -1,5 +1,5 @@
 import { DOMAIN, ORDER_API } from "../contants";
-import { request } from "./request";
+import { request } from "../utils";
 
 export const createOrder = async (ingredients) => {
   const result = await request(`${DOMAIN}${ORDER_API}`, {

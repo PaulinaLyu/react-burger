@@ -1,5 +1,5 @@
 import { DOMAIN, INGREDIENTS_API } from "../contants";
-import { request } from "./request";
+import { request } from "../utils";
 
 export const fetchIngredients = async () => {
   const result = await request(`${DOMAIN}${INGREDIENTS_API}`);
