@@ -1,21 +1,52 @@
-import { useState, useMemo, useRef, createRef } from "react";
-import PropTypes from "prop-types";
+import { useMemo, useRef, createRef, useState } from "react";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
 import { IngredientDetails } from "../ingredient-details";
 import styles from "./burger-ingredients.module.css";
 import { categories } from "../../data/categories";
-import { dataTypes } from "../../data/data-types";
 import { Modal } from "../modal";
+import { Loader } from "../loader";
+import { NO_DATA } from "../../contants";
+import { BUN } from "../../data/categories";
+import { useAppSelector, useAppDispatch } from "../../hooks";
+import {
+  resetCurrentIngredient,
+  setCurrentIngredient,
+} from "../../services/reducers/ingredient-details.reducer";
 
-export const BurgerIngredients = ({ data }) => {
-  const [selectedItem, setSelectedItem] = useState(null);
+export const BurgerIngredients = () => {
+  const [currentTab, setCurrentTab] = useState(BUN);
+  const dispatch = useAppDispatch();
+  const { data, isLoadingData } = useAppSelector(
+    (state) => state.burgerIngredients
+  );
+  const { currentIngredient } = useAppSelector(
+    (state) => state.ingredientDetails
+  );
+  const { bun, ingredients } = useAppSelector(
+    (state) => state.burgerConstructor
+  );
+
   const groups = useMemo(() => {
     return categories.reduce((acc, { key }) => {
       acc[key] = data.filter((item) => item.type === key);
       return acc;
     }, {});
   }, [data]);
+
+  const countData = useMemo(() => {
+    const result = {};
+    if (bun) {
+      result[bun._id] = 2;
+    }
+    for (let item of ingredients) {
+      if (!(item._id in result)) {
+        result[item._id] = 0;
+      }
+      result[item._id]++;
+    }
+    return result;
+  }, [bun, ingredients]);
 
   const headersRef = useRef(
     categories.reduce((acc, { key }) => {
@@ -28,47 +59,71 @@ export const BurgerIngredients = ({ data }) => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const hideDetailsModal = () => setSelectedItem(null);
+  const hideDetailsModal = () => dispatch(resetCurrentIngredient());
+
+  const handleScroll = (e) => {
+    const containerTop = e.currentTarget.getBoundingClientRect().top;
+    const distance = [];
+
+    for (let header of Object.values(headersRef.current)) {
+      const rect = header.current.getBoundingClientRect();
+      const distanceToTop = Math.abs(rect.top - containerTop);
+      distance.push(distanceToTop);
+    }
+
+    const min = Math.min(...distance);
+    const minIndex = distance.indexOf(min);
+    const newTab = Object.keys(headersRef.current)[minIndex];
+
+    if (currentTab !== newTab) {
+      setCurrentTab(newTab);
+    }
+  };
 
   return (
     <section className={`${styles.section} pl-5`}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
-      <BurgerTabs changeTab={changeTab} />
-
-      <div className={styles.list}>
-        {categories.map(({ key, label }, index) => (
-          <div
-            className={categories.length !== index + 1 ? "mb-10" : ""}
-            key={key}
-          >
-            <h2
-              className="text text_type_main-medium mt-2"
-              ref={headersRef.current[key]}
-            >
-              {label}
-            </h2>
-            <ul className={styles.content}>
-              {groups[key]?.map((item) => (
-                <BurgerIngredientCard
-                  key={item._id}
-                  item={item}
-                  onClick={() => setSelectedItem(item)}
-                />
-              ))}
-            </ul>
-            {selectedItem && (
-              <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
-                <IngredientDetails item={selectedItem} />
-              </Modal>
-            )}
+      {isLoadingData ? (
+        <Loader />
+      ) : (
+        <>
+          {" "}
+          <BurgerTabs activeTab={currentTab} changeTab={changeTab} />
+          <div className={styles.list} onScroll={handleScroll}>
+            {categories.map(({ key, label }, index) => (
+              <div
+                className={categories.length !== index + 1 ? "mb-10" : ""}
+                key={key}
+              >
+                <h2
+                  className="text text_type_main-medium mt-2"
+                  ref={headersRef.current[key]}
+                >
+                  {label}
+                </h2>
+                <ul className={styles.content}>
+                  {groups[key]?.length > 0
+                    ? groups[key]?.map((item) => (
+                        <BurgerIngredientCard
+                          key={item._id}
+                          item={item}
+                          count={countData[item._id]}
+                          onClick={() => dispatch(setCurrentIngredient(item))}
+                        />
+                      ))
+                    : NO_DATA}
+                </ul>
+                {currentIngredient && (
+                  <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
+                    <IngredientDetails item={currentIngredient} />
+                  </Modal>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
 };

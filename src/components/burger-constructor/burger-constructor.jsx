@@ -1,36 +1,72 @@
-import { useMemo, useState } from "react";
-import PropTypes from "prop-types";
+import { useEffect, useState, Fragment } from "react";
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
-import { dataTypes } from "../../data/data-types";
-import { BUN } from "../../data/categories";
-import { ORDER_NUMBER } from "../../contants";
+import { BUN, SAUCE, FILLING } from "../../data/categories";
 import { OrderDetails } from "../order-details";
 import { Modal } from "../modal";
+import { BurgerConstructorIngredient } from "../burger-constructor-ingredient";
+import { EmptyBurgerConstructorElement } from "./empty-burger-constructor-element";
+import { useAppSelector, useAppDispatch } from "../../hooks";
+import { useDrop } from "react-dnd";
+import {
+  setBun,
+  setTotalPrice,
+  addIngredient,
+  removeIngredient,
+  resetConstructor,
+} from "../../services/reducers/burger-constructor.reducer";
+import { resetOrder } from "../../services/reducers/order.reducer";
+import { createBurderOrder } from "../../services/actions";
 
-export const BurgerConstructor = ({ data }) => {
+export const BurgerConstructor = () => {
+  const dispatch = useAppDispatch();
   const [isShowOrderModal, setIsShowOrderModal] = useState(false);
 
-  const showOrderModal = () => setIsShowOrderModal(true);
-  const hideOrderModal = () => setIsShowOrderModal(false);
-
-  const ingredients = useMemo(
-    () => data.filter((item) => item.type !== BUN),
-    [data]
+  const { orderNumber } = useAppSelector((state) => state.order);
+  const { bun, ingredients, totalPrice } = useAppSelector(
+    (state) => state.burgerConstructor
   );
-  const bun = useMemo(() => data.find((item) => item.type === BUN), [data]);
+  const hideOrderModal = () => {
+    setIsShowOrderModal(false);
+    dispatch(resetConstructor());
+    dispatch(resetOrder());
+  };
 
-  const totalPrice = useMemo(() => {
-    if (!bun) return ingredients.reduce((sum, item) => sum + item.price, 0);
-    return (
-      bun.price * 2 + ingredients.reduce((sum, item) => sum + item.price, 0)
-    );
-  }, [ingredients, bun]);
+  const createNewOrder = () => {
+    const ingredientsIds = ingredients.map((ingred) => ingred._id);
+    const prepareOrder = [bun._id, ...ingredientsIds];
+    dispatch(createBurderOrder(prepareOrder));
+    setIsShowOrderModal(true);
+  };
+
+  const [, dropTargetBunTop] = useDrop({
+    accept: BUN,
+    drop(item) {
+      dispatch(setBun(item));
+    },
+  });
+
+  const [, dropTargetBunBottom] = useDrop({
+    accept: BUN,
+    drop(item) {
+      dispatch(setBun(item));
+    },
+  });
+
+  const [, dropTargetIngredient] = useDrop({
+    accept: [SAUCE, FILLING],
+    drop(item) {
+      dispatch(addIngredient(item));
+    },
+  });
+
+  const handleRemoveIngredient = (id) => {
+    dispatch(removeIngredient(id));
+  };
 
   const renderBun = (type, label) => (
     <ConstructorElement
@@ -43,26 +79,53 @@ export const BurgerConstructor = ({ data }) => {
     />
   );
 
+  useEffect(() => {
+    let sum = 0;
+    if (bun) {
+      sum += bun.price * 2;
+    }
+    sum += ingredients.reduce((sum, item) => (sum += item.price), 0);
+    dispatch(setTotalPrice(sum));
+  }, [bun, ingredients, dispatch]);
+
   return (
     <section className={`${styles.section} pr-5`}>
       <div className={`${styles.editor} mt-25`}>
-        {bun && renderBun("top", "верх")}
-
-        <ul className={`${styles.list} mt-4 mb-4`}>
-          {ingredients.map((item, index) => (
-            <li className={`${styles.item} mt-4`} key={item._id || index}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                extraClass={`${styles.ingredient} ml-2`}
-              />
-            </li>
-          ))}
+        <div ref={dropTargetBunTop}>
+          {bun ? (
+            renderBun("top", "верх")
+          ) : (
+            <EmptyBurgerConstructorElement
+              position="top"
+              text="Выберите булку"
+            />
+          )}
+        </div>
+        <ul className={`${styles.list} mt-4 mb-4`} ref={dropTargetIngredient}>
+          {ingredients && ingredients.length > 0 ? (
+            ingredients.map((item, index) => (
+              <Fragment key={item.uniqueId}>
+                <BurgerConstructorIngredient
+                  item={item}
+                  index={index}
+                  onDelete={handleRemoveIngredient}
+                />
+              </Fragment>
+            ))
+          ) : (
+            <EmptyBurgerConstructorElement text="Выберите соус или начинку" />
+          )}
         </ul>
-
-        {bun && renderBun("bottom", "низ")}
+        <div ref={dropTargetBunBottom}>
+          {bun ? (
+            renderBun("bottom", "низ")
+          ) : (
+            <EmptyBurgerConstructorElement
+              position="bottom"
+              text="Выберите булку"
+            />
+          )}
+        </div>
       </div>
 
       <div className={`${styles.total} mt-10 mb-10`}>
@@ -70,19 +133,17 @@ export const BurgerConstructor = ({ data }) => {
         <div className={`${styles.icon} ml-5 mr-10`}>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" onClick={showOrderModal}>
-          Оформить заказ
-        </Button>
-        {isShowOrderModal && (
+        {bun && ingredients?.length > 0 && (
+          <Button htmlType="button" type="primary" onClick={createNewOrder}>
+            Оформить заказ
+          </Button>
+        )}
+        {isShowOrderModal && orderNumber && (
           <Modal onClose={hideOrderModal}>
-            <OrderDetails orderNumber={ORDER_NUMBER} />
+            <OrderDetails orderNumber={orderNumber} />
           </Modal>
         )}
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(dataTypes.isRequired).isRequired,
 };

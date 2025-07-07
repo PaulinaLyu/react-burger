@@ -1,22 +1,24 @@
-import { ERROR_TEXT, LOADING_TEXT } from "../../contants";
+import { Bounce, ToastContainer } from "react-toastify";
 import { MainPage } from "../../pages";
-import { useIngredients } from "../../hooks";
 import styles from "./app.module.css";
 
 export const App = () => {
-  const { data, isLoading, isError } = useIngredients();
-
   return (
     <div className={styles.app}>
-      {isLoading || isError ? (
-        <main className={styles.loading}>
-          <p className="text text_type_main-medium">
-            {isLoading ? LOADING_TEXT : ERROR_TEXT}
-          </p>
-        </main>
-      ) : (
-        <MainPage data={data} />
-      )}
+      <MainPage />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
     </div>
   );
 };
