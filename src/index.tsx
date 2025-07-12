@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router";
 import { Provider } from "react-redux";
 import { store } from "./services/store";
 import { DndProvider } from "react-dnd";
@@ -16,7 +17,9 @@ root.render(
     <ErrorBoundary>
       <Provider store={store}>
         <DndProvider backend={HTML5Backend}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </DndProvider>
       </Provider>
     </ErrorBoundary>

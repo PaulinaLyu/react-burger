@@ -1,11 +1,28 @@
 import { Bounce, ToastContainer } from "react-toastify";
-import { MainPage } from "../../pages";
+import { Routes, Route } from "react-router";
+import {
+  MainPage,
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  ProfilePage,
+  IngredientsPage,
+} from "../../pages";
 import styles from "./app.module.css";
 
 export const App = () => {
   return (
     <div className={styles.app}>
-      <MainPage />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="reset-password" element={<ResetPasswordPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="/ingredients/:id" element={<IngredientsPage />} />
+      </Routes>
       <ToastContainer
         position="top-right"
         autoClose={3000}
