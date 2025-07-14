@@ -3,7 +3,7 @@ export const RouterPaths = {
   LOGIN: '/login',
   REGISTRATION: '/register',
   PROFILE: '/profile',
-  FORGOT_PASSWORD: '/forgot-password ',
+  FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   INGREDIENTS: '/ingredients/:id',
   NOTFOUND: '/not-found',
