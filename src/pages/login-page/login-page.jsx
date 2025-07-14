@@ -5,7 +5,7 @@ import {RouterPaths} from '../../utils'
 export const LoginPage = () => {
   const onSubmit = () => {}
 
-  return <form onSubmit={onSubmit}>
+  return <form className="text-align-center" onSubmit={onSubmit}>
           <>
             <h1 className="text text_type_main-medium mb-6">Вход</h1>
             <EmailInput extraClass="mb-6" name="email" />
