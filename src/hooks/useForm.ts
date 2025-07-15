@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 type SubmitFunction<T> = (values: T) => void;
 
@@ -14,7 +14,9 @@ export function useForm<T extends Record<string, any>>({
   const [values, setValues] = useState<T>(initialValues);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
 
@@ -22,13 +24,11 @@ export function useForm<T extends Record<string, any>>({
       ...prevValues,
       [name]: value,
     }));
-
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(values);
-
   };
 
   const resetForm = () => {

@@ -32,7 +32,7 @@ export const App = () => {
           />
           <Route path={RouterPaths.PROFILE} element={<ProfilePage />} />
           <Route path={RouterPaths.INGREDIENTS} element={<IngredientsPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path={RouterPaths.NOTFOUND} element={<NotFoundPage />} />
         </Route>
       </Routes>
       <ToastContainer

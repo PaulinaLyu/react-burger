@@ -6,21 +6,21 @@ import {
 } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { ERROR_PLACE_ORDER } from "../../contants";
-import { registerUserThunk } from "../actions/auth-actions";
-import { User, UserWithoutPassword } from "../../models";
+import { ERROR_LOGIN, ERROR_REGISTRATION } from "../../contants";
+import { registerUserThunk, loginUserThunk } from "../actions/auth-actions";
+import { UserWithoutPassword } from "../../models";
 
 export interface AuthState {
-    user: UserWithoutPassword
-    isLoading: boolean
+  user: UserWithoutPassword;
+  isLoading: boolean;
 }
 
 const initialState: AuthState = {
-    user: {
-        name:'',
-        email:''
-    },
-    isLoading: false
+  user: {
+    name: "",
+    email: "",
+  },
+  isLoading: false,
 };
 
 export const authSlice = createSlice({
@@ -34,17 +34,30 @@ export const authSlice = createSlice({
       })
       .addMatcher(
         isFulfilled(registerUserThunk),
-        (state, action: PayloadAction<User>) => {
-        debugger
+        (state, action: PayloadAction<any>) => {
+          state.user = action.payload.user;
           state.isLoading = false;
         }
       )
       .addMatcher(isRejected(registerUserThunk), (state, action) => {
         state.isLoading = false;
-        toast.error(`${ERROR_PLACE_ORDER}:  ${action.error.message}`);
+        toast.error(`${ERROR_REGISTRATION}:  ${action.error.message}`);
+      })
+      .addMatcher(isPending(loginUserThunk), (state) => {
+        state.isLoading = true;
+      })
+      .addMatcher(
+        isFulfilled(loginUserThunk),
+        (state, action: PayloadAction<any>) => {
+          state.user = action.payload.user;
+          state.isLoading = false;
+        }
+      )
+      .addMatcher(isRejected(loginUserThunk), (state, action) => {
+        state.isLoading = false;
+        toast.error(`${ERROR_LOGIN}:  ${action.error.message}`);
       });
   },
 });
-
 
 export default authSlice.reducer;
