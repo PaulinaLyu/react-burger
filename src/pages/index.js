@@ -5,3 +5,4 @@ export { ForgotPasswordPage } from "./forgot-password-page";
 export { ResetPasswordPage } from "./reset-password-page";
 export { ProfilePage } from "./profile-page";
 export { IngredientsPage } from "./ingredients-page";
+export { NotFoundPage } from "./not-found-page";

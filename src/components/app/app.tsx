@@ -8,6 +8,7 @@ import {
   ResetPasswordPage,
   ProfilePage,
   IngredientsPage,
+  NotFoundPage,
 } from "../../pages";
 import styles from "./app.module.css";
 
@@ -22,6 +23,7 @@ export const App = () => {
         <Route path="reset-password" element={<ResetPasswordPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="/ingredients/:id" element={<IngredientsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <ToastContainer
         position="top-right"
