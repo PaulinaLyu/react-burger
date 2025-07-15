@@ -6,8 +6,8 @@ import { store } from "./services/store";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { App, ErrorBoundary } from "./components";
-import "./index.css";
-import "./variables.css";
+import "./styles/index.css";
+import "./styles/variables.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

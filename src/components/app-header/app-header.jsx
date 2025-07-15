@@ -7,10 +7,11 @@ import {
 
 import { NavGroup } from "../nav-group";
 import styles from "./app-header.module.css";
+import { RouterPaths } from "../../utils";
 
 const navLinks = [
   {
-    href: "/",
+    href: RouterPaths.MAIN,
     icon: BurgerIcon,
     label: "Конструктор",
     position: "left",
