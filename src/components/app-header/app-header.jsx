@@ -23,7 +23,7 @@ const navLinks = [
     position: "left",
   },
   {
-    href: "/",
+    href: RouterPaths.PROFILE,
     icon: ProfileIcon,
     label: "Личный кабинет",
     position: "right",

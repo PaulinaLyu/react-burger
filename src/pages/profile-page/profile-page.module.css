@@ -1,0 +1,17 @@
+.profile {
+  justify-content: flex-start;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.sidebar {
+  width: 320px;
+}
+
+.sidebar a {
+  line-height: 64px;
+}

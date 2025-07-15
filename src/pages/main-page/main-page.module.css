@@ -2,6 +2,5 @@
   height: calc(100vh - var(--header-height));
   display: flex;
   justify-content: space-between;
-  padding: 0 var(--page-padding-side) var(--page-padding-bottom);
   overflow: hidden;
 }

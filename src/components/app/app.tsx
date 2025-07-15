@@ -10,6 +10,8 @@ import {
   IngredientsPage,
   NotFoundPage,
 } from "../../pages";
+import { ProfileEdit } from "../profile-edit";
+import { ProfileOrders } from "../profile-orders";
 import { RouterPaths } from "../../utils";
 import { MainLayout } from "../../layouts/main-layout";
 import styles from "./app.module.css";
@@ -30,10 +32,17 @@ export const App = () => {
             path={RouterPaths.RESET_PASSWORD}
             element={<ResetPasswordPage />}
           />
-          <Route path={RouterPaths.PROFILE} element={<ProfilePage />} />
+
+          <Route path={RouterPaths.PROFILE} element={<ProfilePage />}>
+            <Route index element={<ProfileEdit />} />
+            <Route
+              path={RouterPaths.PROFILE_ORDERS}
+              element={<ProfileOrders />}
+            />
+          </Route>
           <Route path={RouterPaths.INGREDIENTS} element={<IngredientsPage />} />
-          <Route path={RouterPaths.NOTFOUND} element={<NotFoundPage />} />
         </Route>
+        <Route path={RouterPaths.NOTFOUND} element={<NotFoundPage />} />
       </Routes>
       <ToastContainer
         position="top-right"

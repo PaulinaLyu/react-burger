@@ -13,10 +13,10 @@ export const MainPage = () => {
 
   return (
     <>
-      <main className={styles.main}>
+      <div className={styles.main}>
         <BurgerIngredients />
         <BurgerConstructor />
-      </main>
+      </div>
     </>
   );
 };
