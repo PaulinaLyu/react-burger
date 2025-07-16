@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { ERROR_LOGIN, ERROR_REGISTRATION } from "../../contants";
 import { registerUserThunk, loginUserThunk } from "../actions/auth-actions";
 import { UserWithoutPassword } from "../../models";
+import { setCookie } from "../../utils";
 
 export interface AuthState {
   user: UserWithoutPassword;
@@ -36,6 +37,16 @@ export const authSlice = createSlice({
         isFulfilled(registerUserThunk),
         (state, action: PayloadAction<any>) => {
           state.user = action.payload.user;
+          const accessToken = action.payload.accessToken.split("Bearer ")[1];
+          const refreshToken = action.payload.refreshToken;
+
+          if (accessToken) {
+            setCookie("accessToken", accessToken);
+          }
+
+          if (refreshToken && accessToken) {
+            localStorage.setItem("refreshToken", refreshToken);
+          }
           state.isLoading = false;
         }
       )
@@ -50,6 +61,15 @@ export const authSlice = createSlice({
         isFulfilled(loginUserThunk),
         (state, action: PayloadAction<any>) => {
           state.user = action.payload.user;
+          const accessToken = action.payload.accessToken.split("Bearer ")[1];
+          const refreshToken = action.payload.refreshToken;
+          if (accessToken) {
+            setCookie("accessToken", accessToken);
+          }
+
+          if (refreshToken && accessToken) {
+            localStorage.setItem("refreshToken", refreshToken);
+          }
           state.isLoading = false;
         }
       )

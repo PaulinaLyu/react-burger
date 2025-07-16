@@ -1,4 +1,5 @@
-import { useMemo, useRef, createRef, useState } from "react";
+import { useMemo, useRef, createRef, useState, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
 import { IngredientDetails } from "../ingredient-details";
@@ -9,12 +10,13 @@ import { Loader } from "../loader";
 import { NO_DATA } from "../../contants";
 import { BUN } from "../../data/categories";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import {
-  resetCurrentIngredient,
-  setCurrentIngredient,
-} from "../../services/reducers/ingredient-details.reducer";
+import { resetCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
+import { RouterPaths } from "../../utils";
+import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
 
 export const BurgerIngredients = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [currentTab, setCurrentTab] = useState(BUN);
   const dispatch = useAppDispatch();
   const { data, isLoadingData } = useAppSelector(
@@ -80,6 +82,20 @@ export const BurgerIngredients = () => {
     }
   };
 
+  const handleClickCard = useCallback(
+    (ingredient) => {
+      navigate(`/${RouterPaths.INGREDIENTS}/${ingredient._id}`, {
+        replace: true,
+        state: {
+          backgroundLocation: location,
+          ingredient: ingredient,
+        },
+      });
+      dispatch(setCurrentIngredient(ingredient));
+    },
+    [dispatch, navigate, location]
+  );
+
   return (
     <section className={`${styles.section} pl-5`}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
@@ -109,7 +125,7 @@ export const BurgerIngredients = () => {
                           key={item._id}
                           item={item}
                           count={countData[item._id]}
-                          onClick={() => dispatch(setCurrentIngredient(item))}
+                          onClick={() => handleClickCard(item)}
                         />
                       ))
                     : NO_DATA}

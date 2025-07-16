@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { Bounce, ToastContainer } from "react-toastify";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useLocation } from "react-router";
 import {
   MainPage,
   LoginPage,
@@ -14,12 +15,23 @@ import { ProfileEdit } from "../profile-edit";
 import { ProfileOrders } from "../profile-orders";
 import { RouterPaths } from "../../utils";
 import { MainLayout } from "../../layouts/main-layout";
+import { useAppDispatch } from "../../hooks";
 import styles from "./app.module.css";
+import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
 
 export const App = () => {
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
+  const ingredient = location.state?.ingredient;
+
+  useEffect(() => {
+    dispatch(setCurrentIngredient(ingredient));
+  }, [dispatch, ingredient]);
+
   return (
     <div className={styles.app}>
-      <Routes>
+      <Routes location={backgroundLocation || location}>
         <Route element={<MainLayout />}>
           <Route path={RouterPaths.MAIN} element={<MainPage />} />
           <Route path={RouterPaths.LOGIN} element={<LoginPage />} />

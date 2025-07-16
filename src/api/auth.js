@@ -3,10 +3,35 @@ import {
   LOGIN_API,
   RESET_PASSWORD_API,
   REGISTER_API,
+  TOKEN_API,
+  LOGOUT_API,
+  USER_API,
 } from "../contants";
-import { request } from "../utils";
+import { request, requestWithRefresh, getCookie } from "../utils";
 
-export function loginUser(user) {
+export const refreshToken = () => {
+  return request(`${DOMAIN}${TOKEN_API}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem("refreshToken"),
+    }),
+  });
+};
+
+export const logoutUser = () => {
+  return request(`${DOMAIN}${LOGOUT_API}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({ token: localStorage.getItem("refreshToken") }),
+  });
+};
+
+export const loginUser = (user) => {
   return request(`${DOMAIN}${LOGIN_API}`, {
     method: "POST",
     headers: {
@@ -14,9 +39,9 @@ export function loginUser(user) {
     },
     body: JSON.stringify({ ...user }),
   });
-}
+};
 
-export function registerUser(user) {
+export const registerUser = (user) => {
   return request(`${DOMAIN}${REGISTER_API}`, {
     method: "POST",
     headers: {
@@ -24,7 +49,7 @@ export function registerUser(user) {
     },
     body: JSON.stringify({ ...user }),
   });
-}
+};
 
 export const resetPassword = (form) => {
   return request(`${DOMAIN}${RESET_PASSWORD_API}`, {
@@ -33,5 +58,26 @@ export const resetPassword = (form) => {
       "Content-Type": "application/json;charset=utf-8",
     },
     body: JSON.stringify({ ...form }),
+  });
+};
+
+export const getUser = () => {
+  return requestWithRefresh(`${DOMAIN}${USER_API}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      Authorization: "Bearer " + getCookie("accessToken"),
+    },
+  });
+};
+
+export const updateUser = (user) => {
+  return requestWithRefresh(`${DOMAIN}${USER_API}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      Authorization: "Bearer " + getCookie("accessToken"),
+    },
+    body: JSON.stringify({ ...user }),
   });
 };

@@ -1,6 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { registerUser, resetPassword, loginUser } from "../../api";
+import { registerUser, resetPassword, loginUser, logoutUser } from "../../api";
 import { User } from "../../models";
+
+export const logoutUserThunk = createAsyncThunk("data/logoutUser", async () => {
+  return logoutUser();
+});
 
 export const loginUserThunk = createAsyncThunk<Omit<User, "name">>(
   "data/loginUser",

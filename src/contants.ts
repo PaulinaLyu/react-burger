@@ -5,6 +5,9 @@ export const INGREDIENTS_API = "/api/ingredients";
 export const RESET_PASSWORD_API = "/api/password-reset";
 export const REGISTER_API = "/api/auth/register";
 export const LOGIN_API = "/api/auth/login";
+export const LOGOUT_API = "/api/auth/logout";
+export const TOKEN_API = "/api/auth/token";
+export const USER_API = "api/auth/user";
 
 export const NO_DATA = "Нет данных";
 
