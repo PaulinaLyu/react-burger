@@ -7,20 +7,23 @@ import {
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { ERROR_LOGIN, ERROR_REGISTRATION } from "../../contants";
-import { registerUserThunk, loginUserThunk } from "../actions/auth-actions";
+import {
+  registerUserThunk,
+  loginUserThunk,
+  logoutUserThunk,
+  updateUserThunk,
+  getUserThunk,
+} from "../actions/auth-actions";
 import { UserWithoutPassword } from "../../models";
-import { setCookie } from "../../utils";
+import { deleteCookie, setCookie } from "../../utils";
 
 export interface AuthState {
-  user: UserWithoutPassword;
+  user: UserWithoutPassword | null;
   isLoading: boolean;
 }
 
 const initialState: AuthState = {
-  user: {
-    name: "",
-    email: "",
-  },
+  user: null,
   isLoading: false,
 };
 
@@ -36,10 +39,10 @@ export const authSlice = createSlice({
       .addMatcher(
         isFulfilled(registerUserThunk),
         (state, action: PayloadAction<any>) => {
-          state.user = action.payload.user;
+          state.user = { ...action.payload.user };
           const accessToken = action.payload.accessToken.split("Bearer ")[1];
           const refreshToken = action.payload.refreshToken;
-
+          debugger;
           if (accessToken) {
             setCookie("accessToken", accessToken);
           }
@@ -60,7 +63,8 @@ export const authSlice = createSlice({
       .addMatcher(
         isFulfilled(loginUserThunk),
         (state, action: PayloadAction<any>) => {
-          state.user = action.payload.user;
+          state.user = { ...action.payload.user };
+          debugger;
           const accessToken = action.payload.accessToken.split("Bearer ")[1];
           const refreshToken = action.payload.refreshToken;
           if (accessToken) {
@@ -76,6 +80,46 @@ export const authSlice = createSlice({
       .addMatcher(isRejected(loginUserThunk), (state, action) => {
         state.isLoading = false;
         toast.error(`${ERROR_LOGIN}:  ${action.error.message}`);
+      })
+      .addMatcher(isPending(logoutUserThunk), (state) => {
+        state.isLoading = true;
+      })
+      .addMatcher(isFulfilled(logoutUserThunk), (state) => {
+        localStorage.removeItem("refreshToken");
+        deleteCookie("accessToken");
+        debugger;
+        state.user = {
+          name: "",
+          email: "",
+        };
+        state.isLoading = false;
+      })
+      .addMatcher(isRejected(logoutUserThunk), (state, action) => {
+        state.isLoading = false;
+        toast.error(`${action.error.message}`);
+      })
+      .addMatcher(isPending(updateUserThunk), (state) => {
+        state.isLoading = true;
+      })
+      .addMatcher(
+        isFulfilled(updateUserThunk),
+        (state, action: PayloadAction<any>) => {
+          state.user = { ...action.payload.user };
+          debugger;
+        }
+      )
+      .addMatcher(isRejected(updateUserThunk), (state, action) => {
+        state.isLoading = false;
+        toast.error(`${action.error.message}`);
+      })
+      .addMatcher(
+        isFulfilled(getUserThunk),
+        (state, action: PayloadAction<any>) => {
+          state.user = { ...action.payload.user };
+        }
+      )
+      .addMatcher(isRejected(getUserThunk), (state, action) => {
+        toast.error(`${action.error.message}`);
       });
   },
 });

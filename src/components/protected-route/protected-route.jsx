@@ -1,23 +1,25 @@
-import { useAuth } from "../services/auth";
 import { Navigate } from "react-router";
 import { useEffect, useState } from "react";
+import { useAppSelector, useAppDispatch } from "../../hooks";
+import { getUserThunk } from "../../services/actions/auth-actions";
 
-export const ProtectedRoute = ({ route }) => {
-  let { getUser, ...auth } = useAuth();
+export const ProtectedRoute = ({ children }) => {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
   const [isUserLoaded, setUserLoaded] = useState(false);
 
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
-
+  debugger;
   useEffect(() => {
+    async function init() {
+      await dispatch(getUserThunk());
+      setUserLoaded(true);
+    }
     init();
-  }, []);
+  }, [dispatch]);
 
   if (!isUserLoaded) {
     return null;
   }
-
-  return auth.user ? route : <Navigate to="/login" replace />;
+  debugger;
+  return user ? children : <Navigate to="/login" replace />;
 };

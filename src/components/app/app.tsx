@@ -18,6 +18,7 @@ import { MainLayout } from "../../layouts/main-layout";
 import { useAppDispatch } from "../../hooks";
 import styles from "./app.module.css";
 import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
+import { ProtectedRoute } from "../protected-route/protected-route";
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -45,7 +46,14 @@ export const App = () => {
             element={<ResetPasswordPage />}
           />
 
-          <Route path={RouterPaths.PROFILE} element={<ProfilePage />}>
+          <Route
+            path={RouterPaths.PROFILE}
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<ProfileEdit />} />
             <Route
               path={RouterPaths.PROFILE_ORDERS}
