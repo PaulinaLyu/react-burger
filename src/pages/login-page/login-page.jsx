@@ -12,7 +12,7 @@ import { loginUserThunk } from "../../services/actions/auth-actions";
 export const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, user } = useAppSelector((state) => state.auth);
+  const { isLoading } = useAppSelector((state) => state.auth);
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { email: "", password: "" },
     onSubmit: async (data) => {
@@ -25,9 +25,9 @@ export const LoginPage = () => {
     },
   });
 
-  if (user) {
-    return <Navigate to="/" replace />;
-  }
+  // if (user) {
+  //   return <Navigate to="/" replace />;
+  // }
 
   return (
     <form className="text-align-center" onSubmit={handleSubmit}>
@@ -44,7 +44,6 @@ export const LoginPage = () => {
         value={values.password}
         onChange={handleChange}
       />
-
       <Button
         type="primary"
         extraClass="mb-20"

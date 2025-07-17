@@ -48,6 +48,10 @@ export const authSlice = createSlice({
           if (refreshToken && accessToken) {
             localStorage.setItem("refreshToken", refreshToken);
           }
+
+          if (action.payload.user) {
+            localStorage.setItem("user", action.payload.user);
+          }
           state.isLoading = false;
         }
       )
@@ -63,12 +67,17 @@ export const authSlice = createSlice({
         (state, action: PayloadAction<any>) => {
           const accessToken = action.payload.accessToken.split("Bearer ")[1];
           const refreshToken = action.payload.refreshToken;
+
           if (accessToken) {
             setCookie("accessToken", accessToken);
           }
 
           if (refreshToken && accessToken) {
             localStorage.setItem("refreshToken", refreshToken);
+          }
+
+          if (action.payload.user) {
+            localStorage.setItem("user", action.payload.user);
           }
           state.isLoading = false;
         }
@@ -82,6 +91,7 @@ export const authSlice = createSlice({
       })
       .addMatcher(isFulfilled(logoutUserThunk), (state) => {
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
         deleteCookie("accessToken");
         state.user = {
           name: "",

@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: Props) => {
       try {
         await dispatch(getUserThunk()).unwrap();
       } catch (err) {
-        toast.error("Ошибка авторизации");
+        // toast.error("Ошибка авторизации");
       } finally {
         setIsAuthChecked(true);
       }

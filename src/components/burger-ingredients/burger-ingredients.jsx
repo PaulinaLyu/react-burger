@@ -61,7 +61,12 @@ export const BurgerIngredients = () => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const hideDetailsModal = () => dispatch(resetCurrentIngredient());
+  const hideDetailsModal = () =>{ 
+    navigate(RouterPaths.MAIN, {state: {
+          backgroundLocation: null
+    }});
+    dispatch(resetCurrentIngredient())
+  };
 
   const handleScroll = (e) => {
     const containerTop = e.currentTarget.getBoundingClientRect().top;
@@ -84,7 +89,7 @@ export const BurgerIngredients = () => {
 
   const handleClickCard = useCallback(
     (ingredient) => {
-      navigate(`/${RouterPaths.INGREDIENTS}/${ingredient._id}`, {
+      navigate(`/ingredients/${ingredient._id}`, {
         replace: true,
         state: {
           backgroundLocation: location,
