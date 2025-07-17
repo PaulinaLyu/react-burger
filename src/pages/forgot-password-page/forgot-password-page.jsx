@@ -1,4 +1,4 @@
-import { Link, useNavigate, Navigate, useLocation } from "react-router";
+import { Link, useNavigate, Navigate } from "react-router";
 import { RouterPaths } from "../../utils";
 import {
   Button,
@@ -18,14 +18,12 @@ export const ForgotPasswordPage = () => {
     onSubmit: async (data) => {
       try {
         await dispatch(resetPasswordThunk(data)).unwrap();
-        debugger;
         navigate(RouterPaths.RESET_PASSWORD, {
           state: {
             isFromForgotPass: true,
           },
           replace: true,
         });
-        debugger;
       } catch {
         console.error("Ошибка восстановления пароля");
       }

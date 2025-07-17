@@ -6,6 +6,7 @@ import {
   TOKEN_API,
   LOGOUT_API,
   USER_API,
+  FINAL_RESET_PASSWORD_API,
 } from "./constants";
 import { request, requestWithRefresh, getCookie } from "../utils";
 
@@ -53,6 +54,16 @@ export const registerUser = (user) => {
 
 export const resetPassword = (form) => {
   return request(`${DOMAIN}${RESET_PASSWORD_API}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({ ...form }),
+  });
+};
+
+export const approvedResetPassword = (form) => {
+  return request(`${DOMAIN}${FINAL_RESET_PASSWORD_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",

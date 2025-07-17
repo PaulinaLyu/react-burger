@@ -7,4 +7,5 @@ export {
   loginUser,
   logoutUser,
   updateUser,
+  approvedResetPassword,
 } from "./auth";

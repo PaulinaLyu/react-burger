@@ -7,6 +7,7 @@ import { RouterPaths } from "../../utils";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useForm } from "../../hooks/useForm";
 import { Link, Navigate, useNavigate, useLocation } from "react-router";
+import { approvedResetPasswordThunk } from "../../services/actions/auth-actions";
 
 export const ResetPasswordPage = () => {
   const dispatch = useAppDispatch();
@@ -16,8 +17,12 @@ export const ResetPasswordPage = () => {
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { password: "", token: "" },
     onSubmit: async (data) => {
-      // await dispatch(resetPasswordThunk(data));
-      // navigate(RouterPaths.RESET_PASSWORD, { replace: true });
+      try {
+        await dispatch(approvedResetPasswordThunk(data)).unwrap();
+        navigate(RouterPaths.MAIN, { replace: true });
+      } catch {
+        console.error("Ошибка восстановления пароля");
+      }
     },
   });
 
