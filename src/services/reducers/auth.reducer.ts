@@ -39,10 +39,8 @@ export const authSlice = createSlice({
       .addMatcher(
         isFulfilled(registerUserThunk),
         (state, action: PayloadAction<any>) => {
-          state.user = { ...action.payload.user };
           const accessToken = action.payload.accessToken.split("Bearer ")[1];
           const refreshToken = action.payload.refreshToken;
-          debugger;
           if (accessToken) {
             setCookie("accessToken", accessToken);
           }
@@ -63,8 +61,6 @@ export const authSlice = createSlice({
       .addMatcher(
         isFulfilled(loginUserThunk),
         (state, action: PayloadAction<any>) => {
-          state.user = { ...action.payload.user };
-          debugger;
           const accessToken = action.payload.accessToken.split("Bearer ")[1];
           const refreshToken = action.payload.refreshToken;
           if (accessToken) {
@@ -87,7 +83,6 @@ export const authSlice = createSlice({
       .addMatcher(isFulfilled(logoutUserThunk), (state) => {
         localStorage.removeItem("refreshToken");
         deleteCookie("accessToken");
-        debugger;
         state.user = {
           name: "",
           email: "",
@@ -104,8 +99,7 @@ export const authSlice = createSlice({
       .addMatcher(
         isFulfilled(updateUserThunk),
         (state, action: PayloadAction<any>) => {
-          state.user = { ...action.payload.user };
-          debugger;
+          state.user = action.payload.user;
         }
       )
       .addMatcher(isRejected(updateUserThunk), (state, action) => {
@@ -115,10 +109,10 @@ export const authSlice = createSlice({
       .addMatcher(
         isFulfilled(getUserThunk),
         (state, action: PayloadAction<any>) => {
-          state.user = { ...action.payload.user };
+          state.user = action.payload.user;
         }
       )
-      .addMatcher(isRejected(getUserThunk), (state, action) => {
+      .addMatcher(isRejected(getUserThunk), (_, action) => {
         toast.error(`${action.error.message}`);
       });
   },

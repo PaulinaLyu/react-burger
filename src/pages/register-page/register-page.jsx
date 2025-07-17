@@ -7,13 +7,13 @@ import {
 import { Loader } from "../../components/loader";
 import { RouterPaths } from "../../utils";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, Navigate } from "react-router";
 import { registerUserThunk } from "../../services/actions/auth-actions";
 
 export const RegisterPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading } = useAppSelector((state) => state.auth);
+  const { isLoading, user } = useAppSelector((state) => state.auth);
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { email: "", name: "", password: "" },
     onSubmit: async (data) => {
@@ -25,6 +25,10 @@ export const RegisterPage = () => {
       }
     },
   });
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <form className="text-align-center" onSubmit={handleSubmit}>

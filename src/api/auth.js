@@ -6,7 +6,7 @@ import {
   TOKEN_API,
   LOGOUT_API,
   USER_API,
-} from "../contants";
+} from "./constants";
 import { request, requestWithRefresh, getCookie } from "../utils";
 
 export const refreshToken = () => {

@@ -1,4 +1,4 @@
-import { DOMAIN, ORDER_API } from "../contants";
+import { DOMAIN, ORDER_API } from "./constants";
 import { request } from "../utils";
 
 export const createOrder = async (ingredients) => {

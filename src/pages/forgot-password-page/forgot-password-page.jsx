@@ -1,23 +1,40 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, Navigate, useLocation } from "react-router";
 import { RouterPaths } from "../../utils";
 import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useForm } from "../../hooks/useForm";
 import { resetPasswordThunk } from "../../services/actions/auth-actions";
 
 export const ForgotPasswordPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.auth);
+
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { email: "" },
     onSubmit: async (data) => {
-      await dispatch(resetPasswordThunk(data));
-      navigate(RouterPaths.RESET_PASSWORD, { replace: true });
+      try {
+        await dispatch(resetPasswordThunk(data)).unwrap();
+        debugger;
+        navigate(RouterPaths.RESET_PASSWORD, {
+          state: {
+            isFromForgotPass: true,
+          },
+          replace: true,
+        });
+        debugger;
+      } catch {
+        console.error("Ошибка восстановления пароля");
+      }
     },
   });
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <form className="text-align-center" onSubmit={handleSubmit}>

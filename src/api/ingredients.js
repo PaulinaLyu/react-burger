@@ -1,4 +1,4 @@
-import { DOMAIN, INGREDIENTS_API } from "../contants";
+import { DOMAIN, INGREDIENTS_API } from "./constants";
 import { request } from "../utils";
 
 export const fetchIngredients = async () => {

@@ -11,7 +11,7 @@ export const ProfilePage = () => {
   const handleLogout = async () => {
     try {
       await dispatch(logoutUserThunk()).unwrap();
-      navigate(RouterPaths.MAIN, { replace: true });
+      navigate(RouterPaths.LOGIN, { replace: true });
     } catch (err) {
       console.error("Ошибка выхода", err);
     }

@@ -4,7 +4,7 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Loader } from "../../components/loader";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, Navigate } from "react-router";
 import { RouterPaths } from "../../utils";
 import { useAppDispatch, useForm, useAppSelector } from "../../hooks";
 import { loginUserThunk } from "../../services/actions/auth-actions";
@@ -12,7 +12,7 @@ import { loginUserThunk } from "../../services/actions/auth-actions";
 export const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading } = useAppSelector((state) => state.auth);
+  const { isLoading, user } = useAppSelector((state) => state.auth);
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { email: "", password: "" },
     onSubmit: async (data) => {
@@ -24,6 +24,10 @@ export const LoginPage = () => {
       }
     },
   });
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <form className="text-align-center" onSubmit={handleSubmit}>
