@@ -16,6 +16,7 @@ import {
 } from "../actions/auth-actions";
 import { UserWithoutPassword } from "../../models";
 import { deleteCookie, setCookie } from "../../utils";
+import { userStorageService } from "../userStorageService";
 
 export interface AuthState {
   user: UserWithoutPassword | null;
@@ -50,7 +51,7 @@ export const authSlice = createSlice({
           }
 
           if (action.payload.user) {
-            localStorage.setItem("user", action.payload.user);
+            userStorageService.setUser(action.payload.user);
           }
           state.isLoading = false;
         }
@@ -77,7 +78,7 @@ export const authSlice = createSlice({
           }
 
           if (action.payload.user) {
-            localStorage.setItem("user", action.payload.user);
+            userStorageService.setUser(action.payload.user);
           }
           state.isLoading = false;
         }
@@ -91,7 +92,7 @@ export const authSlice = createSlice({
       })
       .addMatcher(isFulfilled(logoutUserThunk), (state) => {
         localStorage.removeItem("refreshToken");
-        localStorage.removeItem("user");
+        userStorageService.removeUser();
         deleteCookie("accessToken");
         state.user = {
           name: "",

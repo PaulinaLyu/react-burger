@@ -9,11 +9,13 @@ import { RouterPaths } from "../../utils";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks";
 import { Link, useNavigate, Navigate } from "react-router";
 import { registerUserThunk } from "../../services/actions/auth-actions";
+import { userStorageService } from "../../services/userStorageService";
 
 export const RegisterPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, user } = useAppSelector((state) => state.auth);
+  const user = userStorageService.getUser();
+  const { isLoading } = useAppSelector((state) => state.auth);
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { email: "", name: "", password: "" },
     onSubmit: async (data) => {

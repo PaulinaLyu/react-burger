@@ -4,16 +4,17 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { RouterPaths } from "../../utils";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { useForm } from "../../hooks/useForm";
 import { Link, Navigate, useNavigate, useLocation } from "react-router";
 import { approvedResetPasswordThunk } from "../../services/actions/auth-actions";
+import { userStorageService } from "../../services/userStorageService";
 
 export const ResetPasswordPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAppSelector((state) => state.auth);
+  const user = userStorageService.getUser();
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { password: "", token: "" },
     onSubmit: async (data) => {
@@ -51,7 +52,12 @@ export const ResetPasswordPage = () => {
         onChange={handleChange}
         extraClass="mb-6"
       />
-      <Button type="primary" extraClass="mb-20" htmlType="submit">
+      <Button
+        disabled={!values.password || !values.token}
+        type="primary"
+        extraClass="mb-20"
+        htmlType="submit"
+      >
         Сохранить
       </Button>
       <p className="text text_type_main-default text_color_inactive">

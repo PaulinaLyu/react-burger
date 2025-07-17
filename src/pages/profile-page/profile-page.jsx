@@ -4,6 +4,17 @@ import { useAppDispatch } from "../../hooks";
 import { logoutUserThunk } from "../../services/actions/auth-actions";
 import styles from "./profile-page.module.css";
 
+const navItems = [
+  {
+    label: "Профиль",
+    to: RouterPaths.PROFILE,
+  },
+  {
+    label: "История заказов",
+    to: RouterPaths.PROFILE_ORDERS,
+  },
+];
+
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -17,21 +28,6 @@ export const ProfilePage = () => {
     }
   };
 
-  const navItems = [
-    {
-      label: "Профиль",
-      to: RouterPaths.PROFILE,
-    },
-    {
-      label: "История заказов",
-      to: RouterPaths.PROFILE_ORDERS,
-    },
-    {
-      label: "Выход",
-      to: RouterPaths.LOGIN,
-      onClick: handleLogout,
-    },
-  ];
   return (
     <div className={styles.wrapper}>
       <nav className={`${styles.sidebar} ml-5 mr-15`}>
@@ -55,6 +51,16 @@ export const ProfilePage = () => {
               </NavLink>
             </li>
           ))}
+          <li>
+            <button className={styles.logout} onClick={handleLogout}>
+              {" "}
+              <span
+                className={"text text_type_main-medium text_color_inactive"}
+              >
+                Выход
+              </span>
+            </button>
+          </li>
         </ul>
         <p className="text text_type_main-default text_color_inactive mt-20">
           В этом разделе вы можете изменить свои персональные данные

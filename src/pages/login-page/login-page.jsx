@@ -8,10 +8,12 @@ import { Link, useNavigate, Navigate } from "react-router";
 import { RouterPaths } from "../../utils";
 import { useAppDispatch, useForm, useAppSelector } from "../../hooks";
 import { loginUserThunk } from "../../services/actions/auth-actions";
+import { userStorageService } from "../../services/userStorageService";
 
 export const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = userStorageService.getUser();
   const { isLoading } = useAppSelector((state) => state.auth);
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { email: "", password: "" },
@@ -25,9 +27,9 @@ export const LoginPage = () => {
     },
   });
 
-  // if (user) {
-  //   return <Navigate to="/" replace />;
-  // }
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <form className="text-align-center" onSubmit={handleSubmit}>

@@ -4,14 +4,15 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { useForm } from "../../hooks/useForm";
 import { resetPasswordThunk } from "../../services/actions/auth-actions";
+import { userStorageService } from "../../services/userStorageService";
 
 export const ForgotPasswordPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user } = useAppSelector((state) => state.auth);
+  const user = userStorageService.getUser();
 
   const { values, handleChange, handleSubmit } = useForm({
     initialValues: { email: "" },
@@ -44,7 +45,12 @@ export const ForgotPasswordPage = () => {
         value={values.email}
         onChange={handleChange}
       />
-      <Button type="primary" extraClass="mb-20" htmlType="submit">
+      <Button
+        disabled={!values.email}
+        type="primary"
+        extraClass="mb-20"
+        htmlType="submit"
+      >
         Восстановить
       </Button>
       <p className="text text_type_main-default text_color_inactive">

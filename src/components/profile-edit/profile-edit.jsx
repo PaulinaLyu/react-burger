@@ -7,21 +7,23 @@ import {
 import { Loader } from "../loader";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks";
 import { updateUserThunk } from "../../services/actions/auth-actions";
+import { userStorageService } from "../../services/userStorageService";
 
 export const ProfileEdit = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, user } = useAppSelector((state) => state.auth);
+  const user = userStorageService.getUser();
+  const { isLoading } = useAppSelector((state) => state.auth);
   const { values, handleChange, handleSubmit, resetForm } = useForm({
-    initialValues: { email: user.email, password: "", name: user.name },
+    initialValues: { email: user?.email, password: "", name: user?.name },
     onSubmit: (data) => {
       dispatch(updateUserThunk(data));
     },
   });
   const isValueChanged =
-    values.name &&
-    values.email &&
-    values.password &&
-    (user.name !== values.name || values.email !== user.email);
+    values?.name &&
+    values?.email &&
+    values?.password &&
+    (user?.name !== values?.name || values?.email !== user?.email);
 
   return (
     <form

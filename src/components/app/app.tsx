@@ -19,7 +19,6 @@ import { useAppDispatch } from "../../hooks";
 import styles from "./app.module.css";
 import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
 import { ProtectedRoute } from "../protected-route/protected-route";
-import { AuthProvider } from "../../providers";
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -33,43 +32,38 @@ export const App = () => {
 
   return (
     <div className={styles.app}>
-      <AuthProvider>
-        <Routes location={backgroundLocation || location}>
-          <Route element={<MainLayout />}>
-            <Route path={RouterPaths.MAIN} element={<MainPage />} />
-            <Route path={RouterPaths.LOGIN} element={<LoginPage />} />
-            <Route path={RouterPaths.REGISTRATION} element={<RegisterPage />} />
-            <Route
-              path={RouterPaths.FORGOT_PASSWORD}
-              element={<ForgotPasswordPage />}
-            />
-            <Route
-              path={RouterPaths.RESET_PASSWORD}
-              element={<ResetPasswordPage />}
-            />
+      <Routes location={backgroundLocation || location}>
+        <Route element={<MainLayout />}>
+          <Route path={RouterPaths.MAIN} element={<MainPage />} />
+          <Route path={RouterPaths.LOGIN} element={<LoginPage />} />
+          <Route path={RouterPaths.REGISTRATION} element={<RegisterPage />} />
+          <Route
+            path={RouterPaths.FORGOT_PASSWORD}
+            element={<ForgotPasswordPage />}
+          />
+          <Route
+            path={RouterPaths.RESET_PASSWORD}
+            element={<ResetPasswordPage />}
+          />
 
+          <Route
+            path={RouterPaths.PROFILE}
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<ProfileEdit />} />
             <Route
-              path={RouterPaths.PROFILE}
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<ProfileEdit />} />
-              <Route
-                path={RouterPaths.PROFILE_ORDERS}
-                element={<ProfileOrders />}
-              />
-            </Route>
-            <Route
-              path={RouterPaths.INGREDIENTS}
-              element={<IngredientsPage />}
+              path={RouterPaths.PROFILE_ORDERS}
+              element={<ProfileOrders />}
             />
           </Route>
-          <Route path={RouterPaths.NOTFOUND} element={<NotFoundPage />} />
-        </Routes>
-      </AuthProvider>
+          <Route path={RouterPaths.INGREDIENTS} element={<IngredientsPage />} />
+        </Route>
+        <Route path={RouterPaths.NOTFOUND} element={<NotFoundPage />} />
+      </Routes>
       <ToastContainer
         position="top-right"
         autoClose={3000}
