@@ -20,7 +20,7 @@ export const ResetPasswordPage = () => {
     onSubmit: async (data) => {
       try {
         await dispatch(approvedResetPasswordThunk(data)).unwrap();
-        navigate(RouterPaths.MAIN, { replace: true });
+        navigate(RouterPaths.LOGIN, { replace: true });
       } catch {
         console.error("Ошибка восстановления пароля");
       }

@@ -13,18 +13,16 @@ import {
   logoutUserThunk,
   updateUserThunk,
   getUserThunk,
+  approvedResetPasswordThunk,
 } from "../actions/auth-actions";
-import { UserWithoutPassword } from "../../models";
 import { deleteCookie, setCookie } from "../../utils";
 import { userStorageService } from "../userStorageService";
 
 export interface AuthState {
-  user: UserWithoutPassword | null;
   isLoading: boolean;
 }
 
 const initialState: AuthState = {
-  user: null,
   isLoading: false,
 };
 
@@ -94,10 +92,6 @@ export const authSlice = createSlice({
         localStorage.removeItem("refreshToken");
         userStorageService.removeUser();
         deleteCookie("accessToken");
-        state.user = {
-          name: "",
-          email: "",
-        };
         state.isLoading = false;
       })
       .addMatcher(isRejected(logoutUserThunk), (state, action) => {
@@ -110,7 +104,8 @@ export const authSlice = createSlice({
       .addMatcher(
         isFulfilled(updateUserThunk),
         (state, action: PayloadAction<any>) => {
-          state.user = action.payload.user;
+          state.isLoading = false;
+          userStorageService.setUser(action.payload.user);
         }
       )
       .addMatcher(isRejected(updateUserThunk), (state, action) => {
@@ -119,11 +114,14 @@ export const authSlice = createSlice({
       })
       .addMatcher(
         isFulfilled(getUserThunk),
-        (state, action: PayloadAction<any>) => {
-          state.user = action.payload.user;
+        (_, action: PayloadAction<any>) => {
+          userStorageService.setUser(action.payload.user);
         }
       )
       .addMatcher(isRejected(getUserThunk), (_, action) => {
+        toast.error(`${action.error.message}`);
+      })
+      .addMatcher(isRejected(approvedResetPasswordThunk), (_, action) => {
         toast.error(`${action.error.message}`);
       });
   },

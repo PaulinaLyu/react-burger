@@ -3,7 +3,7 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Loader } from "../../components/loader";
+import { Loader } from "../../components";
 import { Link, useNavigate, Navigate } from "react-router";
 import { RouterPaths } from "../../utils";
 import { useAppDispatch, useForm, useAppSelector } from "../../hooks";
