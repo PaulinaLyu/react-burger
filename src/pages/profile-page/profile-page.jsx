@@ -34,11 +34,7 @@ export const ProfilePage = () => {
         <ul>
           {navItems.map((item, index) => (
             <li key={index}>
-              <NavLink
-                to={item.to}
-                end={item.to === RouterPaths.PROFILE}
-                {...(item.onClick ? { onClick: item.onClick } : {})}
-              >
+              <NavLink to={item.to} end={item.to === RouterPaths.PROFILE}>
                 {({ isActive }) => (
                   <span
                     className={`text text_type_main-medium ${

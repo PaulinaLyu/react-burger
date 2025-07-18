@@ -17,7 +17,7 @@ const navLinks = [
     position: "left",
   },
   {
-    href: "/",
+    href: "/orders",
     icon: ListIcon,
     label: "Лента заказов",
     position: "left",
