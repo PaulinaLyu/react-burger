@@ -1,4 +1,5 @@
-import { useMemo, useRef, createRef, useState } from "react";
+import { useMemo, useRef, createRef, useState, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
 import { IngredientDetails } from "../ingredient-details";
@@ -9,12 +10,13 @@ import { Loader } from "../loader";
 import { NO_DATA } from "../../contants";
 import { BUN } from "../../data/categories";
 import { useAppSelector, useAppDispatch } from "../../hooks";
-import {
-  resetCurrentIngredient,
-  setCurrentIngredient,
-} from "../../services/reducers/ingredient-details.reducer";
+import { resetCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
+import { RouterPaths } from "../../utils";
+import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
 
 export const BurgerIngredients = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [currentTab, setCurrentTab] = useState(BUN);
   const dispatch = useAppDispatch();
   const { data, isLoadingData } = useAppSelector(
@@ -59,7 +61,12 @@ export const BurgerIngredients = () => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const hideDetailsModal = () => dispatch(resetCurrentIngredient());
+  const hideDetailsModal = () =>{ 
+    navigate(RouterPaths.MAIN, {state: {
+          backgroundLocation: null
+    }});
+    dispatch(resetCurrentIngredient())
+  };
 
   const handleScroll = (e) => {
     const containerTop = e.currentTarget.getBoundingClientRect().top;
@@ -79,6 +86,20 @@ export const BurgerIngredients = () => {
       setCurrentTab(newTab);
     }
   };
+
+  const handleClickCard = useCallback(
+    (ingredient) => {
+      navigate(`/ingredients/${ingredient._id}`, {
+        replace: true,
+        state: {
+          backgroundLocation: location,
+          ingredient: ingredient,
+        },
+      });
+      dispatch(setCurrentIngredient(ingredient));
+    },
+    [dispatch, navigate, location]
+  );
 
   return (
     <section className={`${styles.section} pl-5`}>
@@ -109,7 +130,7 @@ export const BurgerIngredients = () => {
                           key={item._id}
                           item={item}
                           count={countData[item._id]}
-                          onClick={() => dispatch(setCurrentIngredient(item))}
+                          onClick={() => handleClickCard(item)}
                         />
                       ))
                     : NO_DATA}

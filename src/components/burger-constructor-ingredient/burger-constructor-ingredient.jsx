@@ -38,7 +38,7 @@ export const BurgerConstructorIngredient = ({ item, index, onDelete }) => {
         price={item.price}
         thumbnail={item.image}
         extraClass={`${styles.ingredient} ml-2`}
-        handleClose={() => onDelete(item._id)}
+        handleClose={() => onDelete(item.uniqueId)}
       />
     </li>
   );

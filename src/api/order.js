@@ -1,11 +1,12 @@
-import { DOMAIN, ORDER_API } from "../contants";
-import { request } from "../utils";
+import { DOMAIN, ORDER_API } from "./constants";
+import { requestWithRefresh, getCookie } from "../utils";
 
 export const createOrder = async (ingredients) => {
-  const result = await request(`${DOMAIN}${ORDER_API}`, {
+  const result = await requestWithRefresh(`${DOMAIN}${ORDER_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
+      Authorization: "Bearer " + getCookie("accessToken"),
     },
     body: JSON.stringify({ ingredients }),
   });

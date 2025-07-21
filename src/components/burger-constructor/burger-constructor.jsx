@@ -4,6 +4,8 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Loader } from "../../components";
+import { useNavigate } from "react-router";
 import styles from "./burger-constructor.module.css";
 import { BUN, SAUCE, FILLING } from "../../data/categories";
 import { OrderDetails } from "../order-details";
@@ -19,14 +21,18 @@ import {
   removeIngredient,
   resetConstructor,
 } from "../../services/reducers/burger-constructor.reducer";
+import { RouterPaths } from "../../utils";
 import { resetOrder } from "../../services/reducers/order.reducer";
-import { createBurderOrder } from "../../services/actions";
+import { createBurgerOrder } from "../../services/actions";
+import { userStorageService } from "../../services/userStorageService";
 
 export const BurgerConstructor = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const user = userStorageService.getUser();
   const [isShowOrderModal, setIsShowOrderModal] = useState(false);
 
-  const { orderNumber } = useAppSelector((state) => state.order);
+  const { orderNumber, isLoading } = useAppSelector((state) => state.order);
   const { bun, ingredients, totalPrice } = useAppSelector(
     (state) => state.burgerConstructor
   );
@@ -37,9 +43,12 @@ export const BurgerConstructor = () => {
   };
 
   const createNewOrder = () => {
+    if (!user) {
+      navigate(RouterPaths.LOGIN);
+    }
     const ingredientsIds = ingredients.map((ingred) => ingred._id);
     const prepareOrder = [bun._id, ...ingredientsIds];
-    dispatch(createBurderOrder(prepareOrder));
+    dispatch(createBurgerOrder(prepareOrder));
     setIsShowOrderModal(true);
   };
 
@@ -135,7 +144,7 @@ export const BurgerConstructor = () => {
         </div>
         {bun && ingredients?.length > 0 && (
           <Button htmlType="button" type="primary" onClick={createNewOrder}>
-            Оформить заказ
+            {isLoading ? <Loader /> : "Оформить заказ"}
           </Button>
         )}
         {isShowOrderModal && orderNumber && (
