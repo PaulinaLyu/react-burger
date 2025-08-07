@@ -4,6 +4,7 @@ import { IngredientDetails } from "../../components/ingredient-details";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { fetchBurgerIngredients } from "../../services/actions";
 import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
+import { Ingredient } from "../../models";
 
 export const IngredientsPage = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +20,7 @@ export const IngredientsPage = () => {
     const fetchAndSetIngredient = async () => {
       if (currentIngredient || !id) return;
 
-      const findAndSet = (list) => {
+      const findAndSet = (list: Ingredient[]) => {
         const found = list.find((item) => item._id === id);
         if (found) {
           dispatch(setCurrentIngredient(found));
