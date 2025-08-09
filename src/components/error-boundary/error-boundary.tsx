@@ -1,16 +1,27 @@
-import { Component } from "react";
+import { Component, ErrorInfo, ReactNode } from "react";
 
-export class ErrorBoundary extends Component {
-  constructor(props) {
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
     return { hasError: true };
   }
 
-  componentDidCatch(error, info) {
+  componentDidCatch(error: Error, info: ErrorInfo): void {
     console.log("Возникла ошибка!", error, info);
   }
 
@@ -25,6 +36,7 @@ export class ErrorBoundary extends Component {
         </section>
       );
     }
+
     return this.props.children;
   }
 }

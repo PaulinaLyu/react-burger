@@ -1,8 +1,17 @@
+import { ElementType } from "react";
 import { NavLink as RouterNavLink } from "react-router";
-import PropTypes from "prop-types";
 import styles from "./nav-link.module.css";
 
-export const NavLink = ({ icon: Icon, children, href }) => {
+interface INavLinkProps {
+  href: string;
+  icon: ElementType;
+}
+
+export const NavLink: React.FC<React.PropsWithChildren<INavLinkProps>> = ({
+  icon: Icon,
+  children,
+  href,
+}) => {
   return (
     <RouterNavLink to={href} className={`${styles.link} pt-4 pb-4 pr-5 pl-5`}>
       {({ isActive }) => (
@@ -19,10 +28,4 @@ export const NavLink = ({ icon: Icon, children, href }) => {
       )}
     </RouterNavLink>
   );
-};
-
-NavLink.propTypes = {
-  icon: PropTypes.elementType,
-  children: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
 };

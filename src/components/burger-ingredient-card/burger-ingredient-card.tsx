@@ -1,13 +1,23 @@
-import PropTypes from "prop-types";
 import styles from "./burger-ingredient-card.module.css";
 import { useDrag } from "react-dnd";
 import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { dataTypes } from "../../data/data-types";
+import { Ingredient } from "../../models";
+import { useCallback } from "react";
 
-export const BurgerIngredientCard = ({ item, onClick, count }) => {
+interface IBurgerIngredientCardProps {
+  count: number;
+  onClick: () => void;
+  item: Ingredient;
+}
+
+export const BurgerIngredientCard = ({
+  item,
+  onClick,
+  count,
+}: IBurgerIngredientCardProps) => {
   const [{ opacity }, dragRef] = useDrag({
     type: item.type,
     item: item,
@@ -16,12 +26,19 @@ export const BurgerIngredientCard = ({ item, onClick, count }) => {
     }),
   });
 
+  const cardDragRef = useCallback(
+    (node: HTMLLIElement | null) => {
+      if (node) dragRef(node);
+    },
+    [dragRef]
+  );
+
   return (
     <li
       style={{ opacity }}
       className={`${styles.card} mt-6 mb-8 ml-3 mr-2`}
       onClick={onClick}
-      ref={dragRef}
+      ref={cardDragRef}
     >
       <img
         className={`${styles.image} ml-4 mr-4 mb-1`}
@@ -40,10 +57,4 @@ export const BurgerIngredientCard = ({ item, onClick, count }) => {
       )}
     </li>
   );
-};
-
-BurgerIngredientCard.propTypes = {
-  item: dataTypes.isRequired,
-  onClick: PropTypes.func.isRequired,
-  count: PropTypes.number.isRequired,
 };

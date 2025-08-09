@@ -1,8 +1,12 @@
+import { Ingredient } from "../../models";
 import { NutritionInfo } from "../nutrition-info";
-import { dataTypes } from "../../data/data-types";
 import styles from "./ingredient-details.module.css";
 
-export const IngredientDetails = ({ item }) => {
+interface IIngredientDetailsProps {
+  item: Ingredient;
+}
+
+export const IngredientDetails = ({ item }: IIngredientDetailsProps) => {
   const nutrients = [
     { label: "Калории, ккал", value: item.calories },
     { label: "Белки, г", value: item.proteins },
@@ -33,8 +37,4 @@ export const IngredientDetails = ({ item }) => {
       </article>
     </main>
   );
-};
-
-IngredientDetails.propTypes = {
-  item: dataTypes.isRequired,
 };

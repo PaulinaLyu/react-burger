@@ -42,7 +42,7 @@ export const ProfileEdit = () => {
       <EmailInput
         extraClass="mb-6"
         name="email"
-        icon="EditIcon"
+        isIcon
         value={values.email}
         onChange={handleChange}
       />

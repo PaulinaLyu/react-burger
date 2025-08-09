@@ -1,7 +1,5 @@
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import propTypes from "prop-types";
-import { dataTypes } from "../../data/data-types";
 import { useAppDispatch } from "../../hooks";
 import {
   ConstructorElement,
@@ -9,8 +7,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor-ingredient.module.css";
 import { swapIngredients } from "../../services/reducers/burger-constructor.reducer";
+import { IngredientWithUniqueId } from "../../models";
 
-export const BurgerConstructorIngredient = ({ item, index, onDelete }) => {
+interface IBurgerConstructorIngredient {
+  item: IngredientWithUniqueId;
+  index: number;
+  onDelete: (id: string) => void;
+}
+
+export const BurgerConstructorIngredient = ({
+  item,
+  index,
+  onDelete,
+}: IBurgerConstructorIngredient) => {
   const ref = useRef(null);
   const dispatch = useAppDispatch();
 
@@ -21,7 +30,7 @@ export const BurgerConstructorIngredient = ({ item, index, onDelete }) => {
 
   const [, drop] = useDrop({
     accept: "sort",
-    drop(item) {
+    drop(item: any) {
       if (index !== item.index) {
         dispatch(swapIngredients([item.index, index]));
       }
@@ -42,10 +51,4 @@ export const BurgerConstructorIngredient = ({ item, index, onDelete }) => {
       />
     </li>
   );
-};
-
-BurgerConstructorIngredient.propTypes = {
-  item: dataTypes.isRequired,
-  index: propTypes.number,
-  onDelete: propTypes.func.isRequired,
 };

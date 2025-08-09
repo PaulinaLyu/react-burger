@@ -1,8 +1,11 @@
-import PropTypes from "prop-types";
 import img from "../../images/done.png";
 import styles from "./order-details.module.css";
 
-export const OrderDetails = ({ orderNumber }) => {
+interface IOrderDetailsProps {
+  orderNumber: string;
+}
+
+export const OrderDetails = ({ orderNumber }: IOrderDetailsProps) => {
   return (
     <>
       <main className="mb-15">
@@ -24,8 +27,4 @@ export const OrderDetails = ({ orderNumber }) => {
       </footer>
     </>
   );
-};
-
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.string.isRequired,
 };

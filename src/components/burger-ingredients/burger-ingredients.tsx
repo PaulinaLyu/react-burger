@@ -1,4 +1,11 @@
-import { useMemo, useRef, createRef, useState, useCallback } from "react";
+import {
+  useMemo,
+  useRef,
+  createRef,
+  useState,
+  useCallback,
+  RefObject,
+} from "react";
 import { useLocation, useNavigate } from "react-router";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
@@ -8,18 +15,23 @@ import { categories } from "../../data/categories";
 import { Modal } from "../modal";
 import { Loader } from "../loader";
 import { NO_DATA } from "../../contants";
-import { BUN } from "../../data/categories";
+import { IngredientType } from "../../data/categories";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { resetCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
 import { RouterPaths } from "../../utils";
 import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
+import { Ingredient } from "../../models";
+
+type HeadersMap = Record<IngredientType, RefObject<HTMLHeadingElement | null>>;
 
 export const BurgerIngredients = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [currentTab, setCurrentTab] = useState(BUN);
+  const [currentTab, setCurrentTab] = useState<IngredientType>(
+    IngredientType.BUN
+  );
   const dispatch = useAppDispatch();
-  const { data, isLoadingData } = useAppSelector(
+  const { data, isLoading } = useAppSelector(
     (state) => state.burgerIngredients
   );
   const { currentIngredient } = useAppSelector(
@@ -29,15 +41,15 @@ export const BurgerIngredients = () => {
     (state) => state.burgerConstructor
   );
 
-  const groups = useMemo(() => {
+  const groups: Record<IngredientType, Ingredient[]> = useMemo(() => {
     return categories.reduce((acc, { key }) => {
-      acc[key] = data.filter((item) => item.type === key);
+      acc[key] = data.filter((item: Ingredient) => item.type === key);
       return acc;
-    }, {});
+    }, {} as Record<IngredientType, Ingredient[]>);
   }, [data]);
 
   const countData = useMemo(() => {
-    const result = {};
+    const result: Record<string, number> = {};
     if (bun) {
       result[bun._id] = 2;
     }
@@ -50,32 +62,36 @@ export const BurgerIngredients = () => {
     return result;
   }, [bun, ingredients]);
 
-  const headersRef = useRef(
+  const headersRef = useRef<HeadersMap>(
     categories.reduce((acc, { key }) => {
-      acc[key] = createRef();
+      acc[key] = createRef<HTMLHeadingElement | null>();
       return acc;
-    }, {})
+    }, {} as HeadersMap)
   );
 
-  const changeTab = (type) => {
+  const changeTab = (type: IngredientType) => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const hideDetailsModal = () =>{ 
-    navigate(RouterPaths.MAIN, {state: {
-          backgroundLocation: null
-    }});
-    dispatch(resetCurrentIngredient())
+  const hideDetailsModal = () => {
+    navigate(RouterPaths.MAIN, {
+      state: {
+        backgroundLocation: null,
+      },
+    });
+    dispatch(resetCurrentIngredient());
   };
 
-  const handleScroll = (e) => {
+  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
     const containerTop = e.currentTarget.getBoundingClientRect().top;
     const distance = [];
 
     for (let header of Object.values(headersRef.current)) {
-      const rect = header.current.getBoundingClientRect();
-      const distanceToTop = Math.abs(rect.top - containerTop);
-      distance.push(distanceToTop);
+      if (header?.current) {
+        const rect = header.current.getBoundingClientRect();
+        const distanceToTop = Math.abs(rect.top - containerTop);
+        distance.push(distanceToTop);
+      }
     }
 
     const min = Math.min(...distance);
@@ -83,12 +99,14 @@ export const BurgerIngredients = () => {
     const newTab = Object.keys(headersRef.current)[minIndex];
 
     if (currentTab !== newTab) {
-      setCurrentTab(newTab);
+      if (Object.values(IngredientType).includes(newTab as IngredientType)) {
+        setCurrentTab(newTab as IngredientType);
+      }
     }
   };
 
   const handleClickCard = useCallback(
-    (ingredient) => {
+    (ingredient: Ingredient) => {
       navigate(`/ingredients/${ingredient._id}`, {
         replace: true,
         state: {
@@ -105,7 +123,7 @@ export const BurgerIngredients = () => {
     <section className={`${styles.section} pl-5`}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
 
-      {isLoadingData ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>

@@ -33,6 +33,12 @@ interface IApprovedResetPasswordForm {
   token: string;
 }
 
+interface IProfileEditForm {
+  email: string;
+  password: string;
+  name: string;
+}
+
 export const logoutUserThunk = createAsyncThunk(
   "data/logoutUser",
   async (_, thunkAPI) => {
@@ -100,7 +106,7 @@ export const getUserThunk = createAsyncThunk(
   }
 );
 
-export const updateUserThunk = createAsyncThunk<User>(
+export const updateUserThunk = createAsyncThunk<User, IProfileEditForm>(
   "data/updateUser",
   async (form, thunkAPI) => {
     try {

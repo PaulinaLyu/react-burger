@@ -1,13 +1,13 @@
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState, Fragment, useCallback } from "react";
 import {
   Button,
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Loader } from "../../components";
+import { Loader } from "..";
 import { useNavigate } from "react-router";
 import styles from "./burger-constructor.module.css";
-import { BUN, SAUCE, FILLING } from "../../data/categories";
+import { IngredientType } from "../../data/categories";
 import { OrderDetails } from "../order-details";
 import { Modal } from "../modal";
 import { BurgerConstructorIngredient } from "../burger-constructor-ingredient";
@@ -25,6 +25,7 @@ import { RouterPaths } from "../../utils";
 import { resetOrder } from "../../services/reducers/order.reducer";
 import { createBurgerOrder } from "../../services/actions";
 import { userStorageService } from "../../services/userStorageService";
+import { Ingredient } from "../../models";
 
 export const BurgerConstructor = () => {
   const dispatch = useAppDispatch();
@@ -42,42 +43,65 @@ export const BurgerConstructor = () => {
     dispatch(resetOrder());
   };
 
-  const createNewOrder = () => {
+  const createNewOrder = (bunId: string) => {
     if (!user) {
       navigate(RouterPaths.LOGIN);
     }
     const ingredientsIds = ingredients.map((ingred) => ingred._id);
-    const prepareOrder = [bun._id, ...ingredientsIds];
+    const prepareOrder = [bunId, ...ingredientsIds];
     dispatch(createBurgerOrder(prepareOrder));
     setIsShowOrderModal(true);
   };
 
   const [, dropTargetBunTop] = useDrop({
-    accept: BUN,
-    drop(item) {
+    accept: IngredientType.BUN,
+    drop(item: Ingredient) {
       dispatch(setBun(item));
     },
   });
-
   const [, dropTargetBunBottom] = useDrop({
-    accept: BUN,
-    drop(item) {
+    accept: IngredientType.BUN,
+    drop(item: Ingredient) {
       dispatch(setBun(item));
     },
   });
-
   const [, dropTargetIngredient] = useDrop({
-    accept: [SAUCE, FILLING],
-    drop(item) {
+    accept: [IngredientType.SAUCE, IngredientType.FILLING],
+    drop(item: Ingredient) {
       dispatch(addIngredient(item));
     },
   });
 
-  const handleRemoveIngredient = (id) => {
+  const bunTopRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (node) dropTargetBunTop(node);
+    },
+    [dropTargetBunTop]
+  );
+
+  const bunBottomRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (node) dropTargetBunBottom(node);
+    },
+    [dropTargetBunBottom]
+  );
+
+  const ingredientRef = useCallback(
+    (node: HTMLUListElement | null) => {
+      if (node) dropTargetIngredient(node);
+    },
+    [dropTargetIngredient]
+  );
+
+  const handleRemoveIngredient = (id: string) => {
     dispatch(removeIngredient(id));
   };
 
-  const renderBun = (type, label) => (
+  const renderBun = (
+    type: "top" | "bottom",
+    label: string,
+    bun: Ingredient
+  ) => (
     <ConstructorElement
       type={type}
       isLocked={true}
@@ -100,9 +124,9 @@ export const BurgerConstructor = () => {
   return (
     <section className={`${styles.section} pr-5`}>
       <div className={`${styles.editor} mt-25`}>
-        <div ref={dropTargetBunTop}>
+        <div ref={bunTopRef}>
           {bun ? (
-            renderBun("top", "верх")
+            renderBun("top", "верх", bun)
           ) : (
             <EmptyBurgerConstructorElement
               position="top"
@@ -110,7 +134,7 @@ export const BurgerConstructor = () => {
             />
           )}
         </div>
-        <ul className={`${styles.list} mt-4 mb-4`} ref={dropTargetIngredient}>
+        <ul className={`${styles.list} mt-4 mb-4`} ref={ingredientRef}>
           {ingredients && ingredients.length > 0 ? (
             ingredients.map((item, index) => (
               <Fragment key={item.uniqueId}>
@@ -125,9 +149,9 @@ export const BurgerConstructor = () => {
             <EmptyBurgerConstructorElement text="Выберите соус или начинку" />
           )}
         </ul>
-        <div ref={dropTargetBunBottom}>
+        <div ref={bunBottomRef}>
           {bun ? (
-            renderBun("bottom", "низ")
+            renderBun("bottom", "низ", bun)
           ) : (
             <EmptyBurgerConstructorElement
               position="bottom"
@@ -143,13 +167,17 @@ export const BurgerConstructor = () => {
           <CurrencyIcon type="primary" />
         </div>
         {bun && ingredients?.length > 0 && (
-          <Button htmlType="button" type="primary" onClick={createNewOrder}>
+          <Button
+            htmlType="button"
+            type="primary"
+            onClick={() => createNewOrder(bun._id)}
+          >
             {isLoading ? <Loader /> : "Оформить заказ"}
           </Button>
         )}
         {isShowOrderModal && orderNumber && (
           <Modal onClose={hideOrderModal}>
-            <OrderDetails orderNumber={orderNumber} />
+            <OrderDetails orderNumber={String(orderNumber)} />
           </Modal>
         )}
       </div>

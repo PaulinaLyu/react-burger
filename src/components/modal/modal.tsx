@@ -1,12 +1,23 @@
-import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { ModalOverlay } from "../modal-overlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEscapeKey } from "../../hooks";
 import styles from "./modal.module.css";
 
-export const Modal = ({ title = "", children, onClose }) => {
+interface IModalProps {
+  title?: string;
+  onClose: () => void;
+}
+
+export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
+  title = "",
+  children,
+  onClose,
+}) => {
   useEscapeKey(onClose);
+
+  const modalRoot = document.getElementById("modal");
+  if (!modalRoot) return null;
 
   return ReactDOM.createPortal(
     <section className={styles.modal} role="dialog" aria-modal="true">
@@ -27,12 +38,6 @@ export const Modal = ({ title = "", children, onClose }) => {
       </article>
       <ModalOverlay onClose={onClose} />
     </section>,
-    document.getElementById("modal")
+    modalRoot
   );
-};
-
-Modal.propTypes = {
-  children: PropTypes.node,
-  title: PropTypes.string,
-  onClose: PropTypes.func.isRequired,
 };
