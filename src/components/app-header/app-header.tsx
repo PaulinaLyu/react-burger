@@ -28,7 +28,7 @@ const navLinks = [
     label: "Личный кабинет",
     position: "right",
   },
-];
+] as const;
 
 export const AppHeader = () => {
   return (

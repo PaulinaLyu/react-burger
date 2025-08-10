@@ -9,9 +9,17 @@ import {
   FINAL_RESET_PASSWORD_API,
 } from "./constants";
 import { request, requestWithRefresh, getCookie } from "../utils";
+import {
+  ApiResponseWithoutData,
+  AuthResponse,
+  IApprovedResetPasswordForm,
+  ILoginForm,
+  InfoResponse,
+} from "../types";
+import { User } from "../models";
 
-export const refreshToken = () => {
-  return request(`${DOMAIN}${TOKEN_API}`, {
+export const refreshToken = (): Promise<ApiResponseWithoutData> => {
+  return request<ApiResponseWithoutData>(`${DOMAIN}${TOKEN_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -22,8 +30,8 @@ export const refreshToken = () => {
   });
 };
 
-export const logoutUser = () => {
-  return request(`${DOMAIN}${LOGOUT_API}`, {
+export const logoutUser = (): Promise<InfoResponse> => {
+  return request<InfoResponse>(`${DOMAIN}${LOGOUT_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -32,8 +40,8 @@ export const logoutUser = () => {
   });
 };
 
-export const loginUser = (user) => {
-  return request(`${DOMAIN}${LOGIN_API}`, {
+export const loginUser = (user: ILoginForm): Promise<AuthResponse> => {
+  return request<AuthResponse>(`${DOMAIN}${LOGIN_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -42,8 +50,8 @@ export const loginUser = (user) => {
   });
 };
 
-export const registerUser = (user) => {
-  return request(`${DOMAIN}${REGISTER_API}`, {
+export const registerUser = (user: User): Promise<AuthResponse> => {
+  return request<AuthResponse>(`${DOMAIN}${REGISTER_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -52,8 +60,10 @@ export const registerUser = (user) => {
   });
 };
 
-export const resetPassword = (form) => {
-  return request(`${DOMAIN}${RESET_PASSWORD_API}`, {
+export const resetPassword = (form: {
+  email: string;
+}): Promise<InfoResponse> => {
+  return request<InfoResponse>(`${DOMAIN}${RESET_PASSWORD_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -62,8 +72,10 @@ export const resetPassword = (form) => {
   });
 };
 
-export const approvedResetPassword = (form) => {
-  return request(`${DOMAIN}${FINAL_RESET_PASSWORD_API}`, {
+export const approvedResetPassword = (
+  form: IApprovedResetPasswordForm
+): Promise<InfoResponse> => {
+  return request<InfoResponse>(`${DOMAIN}${FINAL_RESET_PASSWORD_API}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -72,8 +84,8 @@ export const approvedResetPassword = (form) => {
   });
 };
 
-export const getUser = () => {
-  return requestWithRefresh(`${DOMAIN}${USER_API}`, {
+export const getUser = (): Promise<AuthResponse> => {
+  return requestWithRefresh<AuthResponse>(`${DOMAIN}${USER_API}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -82,8 +94,8 @@ export const getUser = () => {
   });
 };
 
-export const updateUser = (user) => {
-  return requestWithRefresh(`${DOMAIN}${USER_API}`, {
+export const updateUser = (user: User): Promise<AuthResponse> => {
+  return requestWithRefresh<AuthResponse>(`${DOMAIN}${USER_API}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json;charset=utf-8",

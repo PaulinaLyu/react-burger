@@ -1,3 +1,5 @@
+import { UserWithoutPassword } from "../models";
+
 const USER_KEY = "user";
 
 export const userStorageService = {
@@ -6,7 +8,7 @@ export const userStorageService = {
     return data ? JSON.parse(data) : null;
   },
 
-  setUser(user) {
+  setUser(user: UserWithoutPassword) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   },
 
