@@ -1,3 +1,12 @@
+import {
+  AuthResponse,
+  IApprovedResetPasswordForm,
+  ILoginForm,
+  InfoResponse,
+  IProfileEditForm,
+  IRegisterForm,
+  IResetPasswordForm,
+} from "./../../types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   registerUser,
@@ -8,7 +17,6 @@ import {
   approvedResetPassword,
   logoutUser,
 } from "../../api";
-import { User } from "../../models";
 import { processAuthData } from "../../utils/authUtils";
 import { userStorageService } from "../userStorageService";
 import { deleteCookie } from "../../utils";
@@ -28,20 +36,20 @@ export const logoutUserThunk = createAsyncThunk(
   }
 );
 
-export const loginUserThunk = createAsyncThunk<
-  Omit<User, "name">,
-  { rejectValue: string }
->("data/loginUser", async (form, thunkAPI) => {
-  try {
-    const response = await loginUser(form);
-    processAuthData(response);
-    return response;
-  } catch (error: any) {
-    return thunkAPI.rejectWithValue(error.message);
+export const loginUserThunk = createAsyncThunk<AuthResponse, ILoginForm>(
+  "data/loginUser",
+  async (form, thunkAPI) => {
+    try {
+      const response = await loginUser(form);
+      processAuthData(response);
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-});
+);
 
-export const registerUserThunk = createAsyncThunk<User>(
+export const registerUserThunk = createAsyncThunk<AuthResponse, IRegisterForm>(
   "data/registerUser",
   async (form, thunkAPI) => {
     try {
@@ -54,19 +62,19 @@ export const registerUserThunk = createAsyncThunk<User>(
   }
 );
 
-export const approvedResetPasswordThunk = createAsyncThunk<any>(
-  "data/resetPassword",
-  async (form) => {
-    return approvedResetPassword(form);
-  }
-);
+export const approvedResetPasswordThunk = createAsyncThunk<
+  InfoResponse,
+  IApprovedResetPasswordForm
+>("data/resetPassword", async (form) => {
+  return approvedResetPassword(form);
+});
 
-export const resetPasswordThunk = createAsyncThunk<any>(
-  "data/resetPassword",
-  async (form) => {
-    return resetPassword(form);
-  }
-);
+export const resetPasswordThunk = createAsyncThunk<
+  InfoResponse,
+  IResetPasswordForm
+>("data/resetPassword", async (form) => {
+  return resetPassword(form);
+});
 
 export const getUserThunk = createAsyncThunk(
   "data/getUser",
@@ -80,7 +88,7 @@ export const getUserThunk = createAsyncThunk(
   }
 );
 
-export const updateUserThunk = createAsyncThunk<User>(
+export const updateUserThunk = createAsyncThunk<AuthResponse, IProfileEditForm>(
   "data/updateUser",
   async (form, thunkAPI) => {
     try {
