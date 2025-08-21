@@ -19,6 +19,7 @@ import { useAppDispatch } from "../../hooks";
 import styles from "./app.module.css";
 import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
 import { ProtectedRoute } from "../protected-route/protected-route";
+import { FeedPage } from "../../pages/feed-page";
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -61,6 +62,7 @@ export const App = () => {
             />
           </Route>
           <Route path={RouterPaths.INGREDIENTS} element={<IngredientsPage />} />
+          <Route path={RouterPaths.FEED} element={<FeedPage />} />
         </Route>
         <Route path={RouterPaths.NOTFOUND} element={<NotFoundPage />} />
       </Routes>

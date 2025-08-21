@@ -17,7 +17,7 @@ const navLinks = [
     position: "left",
   },
   {
-    href: "/orders",
+    href: RouterPaths.FEED,
     icon: ListIcon,
     label: "Лента заказов",
     position: "left",

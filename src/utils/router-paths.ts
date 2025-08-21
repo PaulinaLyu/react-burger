@@ -8,6 +8,10 @@ export const RouterPaths = {
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   INGREDIENTS: "/ingredients/:id",
+  FEED: "/feed",
+  FEED_ORDER: "/feed/:id",
+  OWN_ORDERS: "orders",
+  OWN_ORDER: "orders/:id",
   NOTFOUND: "*",
   ERROR: "/error",
 } as const;
