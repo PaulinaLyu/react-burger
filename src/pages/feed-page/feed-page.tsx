@@ -32,7 +32,7 @@ export const FeedPage = () => {
             </h5>
             <OrdersFeed data={messages} />
           </section>
-          <section className="mt-6">
+          <section className={`${styles.col} mt-6`}>
             <OrdersStatus data={messages} />
           </section>
         </main>
