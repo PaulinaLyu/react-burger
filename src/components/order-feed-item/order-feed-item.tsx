@@ -8,7 +8,8 @@ import { Link, useLocation } from "react-router";
 import styles from "./order-feed-item.module.css";
 import { FeedItem, Ingredient } from "../../models";
 
-import { useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { calculateOrderTotal, getOrderStatus } from "../../utils";
 
 interface IOrdersFeedItemProp {
   order: FeedItem;
@@ -18,11 +19,14 @@ interface IOrdersFeedItemProp {
 const MAX_VISIBLE_ITEMS = 6;
 
 export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const { data: ingredients } = useAppSelector(
     (state) => state.burgerIngredients
   );
+
+  const status = useMemo(() => getOrderStatus(order), [order]);
 
   const orderIngredients = useMemo(
     () =>
@@ -32,22 +36,8 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     [ingredients, order]
   );
 
-  const status = useMemo(
-    () =>
-      order.status === "done"
-        ? "Выполнен"
-        : order.status === "created"
-        ? "Создан"
-        : "Готовится",
-    [order]
-  );
-
   const total = useMemo(
-    () =>
-      orderIngredients.reduce(
-        (total: number, item: Ingredient | undefined) => item!.price + total,
-        0
-      ),
+    () => calculateOrderTotal(orderIngredients),
     [orderIngredients]
   );
 

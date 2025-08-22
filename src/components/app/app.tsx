@@ -20,6 +20,7 @@ import styles from "./app.module.css";
 import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { FeedPage } from "../../pages/feed-page";
+import { FeedOrderPage } from "../../pages/feed-order-page";
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -57,12 +58,20 @@ export const App = () => {
           >
             <Route index element={<ProfileEdit />} />
             <Route
+              path={RouterPaths.PROFILE_ORDER}
+              element={<FeedOrderPage />}
+            />
+            <Route
               path={RouterPaths.PROFILE_ORDERS}
               element={<ProfileOrders />}
             />
           </Route>
           <Route path={RouterPaths.INGREDIENTS} element={<IngredientsPage />} />
-          <Route path={RouterPaths.FEED} element={<FeedPage />} />
+
+          <Route path={RouterPaths.FEED}>
+            <Route index element={<FeedPage />} />
+            <Route path={RouterPaths.FEED_ORDER} element={<FeedOrderPage />} />
+          </Route>
         </Route>
         <Route path={RouterPaths.NOTFOUND} element={<NotFoundPage />} />
       </Routes>

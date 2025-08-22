@@ -1,6 +1,7 @@
 import { DOMAIN, ORDER_API } from "./constants";
-import { requestWithRefresh, getCookie } from "../utils";
-import { OrderResponse } from "../types";
+import { requestWithRefresh, getCookie, request } from "../utils";
+import { OrderResponse, ResponseWithOptionalSuccess } from "../types";
+import { FeedItem } from "../models";
 
 export const createOrder = async (ingredients: string[]) => {
   const result = await requestWithRefresh<OrderResponse>(
@@ -22,4 +23,13 @@ export const createOrder = async (ingredients: string[]) => {
   }
 
   return result.order.number;
+};
+
+interface DataType extends ResponseWithOptionalSuccess {
+  orders: FeedItem[];
+}
+
+export const fetchOrderById = async (id: string): Promise<FeedItem> => {
+  const result = await request<DataType>(`${DOMAIN}${ORDER_API}/${id}`);
+  return result?.orders?.[0];
 };
