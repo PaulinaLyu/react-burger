@@ -8,7 +8,6 @@ import { Loader } from "../../components";
 export const FeedOrderPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  debugger;
   const orders = useAppSelector(
     (state) =>
       state.wsFeed.messages?.orders ?? state.wsProfile.messages?.orders ?? []
@@ -23,7 +22,7 @@ export const FeedOrderPage = () => {
       dispatch(getOrderById(String(id)));
     }
   }, [order, id, dispatch]);
-  debugger;
+
   if (order) {
     return <OrderInfo item={order} />;
   }

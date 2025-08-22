@@ -26,6 +26,9 @@ export const CurrentOrderSlice = createSlice({
   name: "currentOrder",
   initialState,
   reducers: {
+    setCurrentOrder(state, action: PayloadAction<FeedItem>) {
+      state.currentOrder = action.payload;
+    },
     resetCurrentOrder() {
       return initialState;
     },
@@ -39,7 +42,6 @@ export const CurrentOrderSlice = createSlice({
       .addMatcher(
         isFulfilled(getOrderById),
         (state, action: PayloadAction<FeedItem>) => {
-          debugger;
           state.currentOrder = action.payload;
           state.isLoading = false;
         }
@@ -51,6 +53,6 @@ export const CurrentOrderSlice = createSlice({
   },
 });
 
-export const { resetCurrentOrder } = CurrentOrderSlice.actions;
+export const { resetCurrentOrder, setCurrentOrder } = CurrentOrderSlice.actions;
 
 export default CurrentOrderSlice.reducer;

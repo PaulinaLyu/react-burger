@@ -10,6 +10,7 @@ import { FeedItem, Ingredient } from "../../models";
 
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { calculateOrderTotal, getOrderStatus } from "../../utils";
+import { setCurrentOrder } from "../../services/reducers/curent-order.reducer";
 
 interface IOrdersFeedItemProp {
   order: FeedItem;
@@ -19,9 +20,8 @@ interface IOrdersFeedItemProp {
 const MAX_VISIBLE_ITEMS = 6;
 
 export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
-  const dispatch = useAppDispatch();
   const location = useLocation();
-
+  const dispatch = useAppDispatch();
   const { data: ingredients } = useAppSelector(
     (state) => state.burgerIngredients
   );
@@ -52,11 +52,16 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     [orderIngredients]
   );
 
+  const handleClickLink = () => {
+    dispatch(setCurrentOrder(order));
+  };
+
   return (
     <Link
       className={`${styles.order} p-6 mb-6`}
       to={`${location.pathname}/${order.number}`}
-      state={{ location: location }}
+      state={{ backgroundLocation: location }}
+      onClick={handleClickLink}
     >
       <div className={styles.header}>
         <p className="text text_type_digits-default">#{order.number}</p>

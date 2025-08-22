@@ -1,7 +1,3 @@
-// export const BUN = "bun";
-// export const SAUCE = "sauce";
-// export const FILLING = "main";
-
 export enum IngredientType {
   BUN = "bun",
   SAUCE = "sauce",
