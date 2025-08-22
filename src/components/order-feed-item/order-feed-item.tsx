@@ -24,6 +24,14 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     (state) => state.burgerIngredients
   );
 
+  const orderIngredients = useMemo(
+    () =>
+      order.ingredients.map((id: string) => {
+        return ingredients.find((item: Ingredient) => item._id === id);
+      }),
+    [ingredients, order]
+  );
+
   const status = useMemo(
     () =>
       order.status === "done"
@@ -34,20 +42,6 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     [order]
   );
 
-  const color = useMemo(
-    () =>
-      order.status === "done" ? styles.status_done : styles.status_default,
-    [order]
-  );
-
-  const orderIngredients = useMemo(
-    () =>
-      order.ingredients.map((id: string) => {
-        return ingredients.find((item: Ingredient) => item._id === id);
-      }),
-    [ingredients, order]
-  );
-
   const total = useMemo(
     () =>
       orderIngredients.reduce(
@@ -55,6 +49,12 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
         0
       ),
     [orderIngredients]
+  );
+
+  const color = useMemo(
+    () =>
+      order.status === "done" ? styles.status_done : styles.status_default,
+    [order]
   );
 
   const displayedItems = useMemo(
@@ -78,9 +78,7 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
 
       <p className={`mt-4 text text_type_main-medium`}>{order.name}</p>
       {isUser && status && (
-        <p className={`${styles.status} ${color} text text_type_main-default`}>
-          {status}
-        </p>
+        <p className={`${color} text text_type_main-default`}>{status}</p>
       )}
       <div className={styles.wrapper}>
         <div className={styles.ingredients}>

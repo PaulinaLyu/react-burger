@@ -2,19 +2,22 @@ import styles from "./feed-page.module.css";
 import { Loader, OrdersFeed, OrdersStatus } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { ERROR_WS } from "../../contants";
-import { wsEnd, wsInit } from "../../services/reducers/ws.reducer";
+
 import { useEffect } from "react";
 import { fetchBurgerIngredients } from "../../services/actions";
+import { feedWsActions } from "../../services/wsSlices";
 
 export const FeedPage = () => {
   const dispatch = useAppDispatch();
-  const { connected, error, messages } = useAppSelector((state) => state.ws);
+  const { connected, error, messages } = useAppSelector(
+    (state) => state.wsFeed
+  );
 
   useEffect(() => {
     dispatch(fetchBurgerIngredients());
-    dispatch(wsInit());
+    dispatch(feedWsActions.wsInit({}));
     return () => {
-      dispatch(wsEnd());
+      dispatch(feedWsActions.wsEnd());
     };
   }, [dispatch]);
 
