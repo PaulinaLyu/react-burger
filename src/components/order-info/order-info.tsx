@@ -1,18 +1,20 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import styles from "./order-info.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FeedItem, Ingredient, IngredientWithCount } from "../../models";
-import { useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { calculateOrderTotal, getOrderStatus } from "../../utils";
+import { fetchBurgerIngredients } from "../../services/actions";
 
 interface IOrderInfoProps {
   item: FeedItem;
 }
 
 export const OrderInfo = ({ item }: IOrderInfoProps) => {
+  const dispatch = useAppDispatch();
   const { data: ingredients } = useAppSelector(
     (state) => state.burgerIngredients
   );
@@ -20,7 +22,7 @@ export const OrderInfo = ({ item }: IOrderInfoProps) => {
   const status = useMemo(() => getOrderStatus(item), [item]);
 
   const orderIngredients = useMemo(() => {
-    if (item === null) {
+    if (item === null || !ingredients || ingredients?.length === 0) {
       return null;
     }
     let group: Record<string, IngredientWithCount> = {};
@@ -35,6 +37,7 @@ export const OrderInfo = ({ item }: IOrderInfoProps) => {
         group[ingredientId].count += 1;
       }
     }
+
     let res: IngredientWithCount[] = [];
     for (let el of item!.ingredients) {
       if (group[el]) {
@@ -42,6 +45,7 @@ export const OrderInfo = ({ item }: IOrderInfoProps) => {
         delete group[el];
       }
     }
+
     return res;
   }, [ingredients, item]);
 
@@ -49,6 +53,12 @@ export const OrderInfo = ({ item }: IOrderInfoProps) => {
     () => calculateOrderTotal(orderIngredients),
     [orderIngredients]
   );
+
+  useEffect(() => {
+    if (!ingredients || ingredients?.length === 0) {
+      dispatch(fetchBurgerIngredients());
+    }
+  }, [dispatch, ingredients]);
 
   return (
     <main>

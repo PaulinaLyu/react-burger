@@ -1,4 +1,4 @@
-import { To, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { FeedItem, IOrdersFeed } from "../../models";
 import { resetCurrentOrder } from "../../services/reducers/curent-order.reducer";
@@ -7,6 +7,7 @@ import { Modal } from "../modal";
 import { OrderFeedItem } from "../order-feed-item";
 import { OrderInfo } from "../order-info/order-info";
 import styles from "./orders-feed.module.css";
+import { RouterPaths } from "../../utils";
 
 interface IOrdersFeedProps {
   data: IOrdersFeed;
@@ -16,10 +17,20 @@ interface IOrdersFeedProps {
 export const OrdersFeed = ({ data, isUser = false }: IOrdersFeedProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { currentOrder } = useAppSelector((state) => state.currentOrder);
 
   const hideDetailsModal = () => {
-    navigate(-1 as To, { state: { backgroundLocation: null } });
+    const navigatePath = location.pathname.includes(RouterPaths.FEED)
+      ? RouterPaths.FEED
+      : RouterPaths.PROFILE + "/" + RouterPaths.PROFILE_ORDERS;
+
+    navigate(navigatePath, {
+      state: {
+        backgroundLocation: null,
+      },
+    });
+
     dispatch(resetCurrentOrder());
   };
 

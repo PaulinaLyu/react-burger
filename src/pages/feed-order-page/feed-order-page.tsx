@@ -1,38 +1,42 @@
 import { useParams } from "react-router";
+import { useEffect } from "react";
 import { OrderInfo } from "../../components/order-info/order-info";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useEffect } from "react";
 import { getOrderById } from "../../services/actions";
 import { Loader } from "../../components";
 
 export const FeedOrderPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  const orders = useAppSelector(
-    (state) =>
-      state.wsFeed.messages?.orders ?? state.wsProfile.messages?.orders ?? []
+
+  const feedOrders = useAppSelector((state) => state.wsFeed.messages?.orders);
+  const profileOrders = useAppSelector(
+    (state) => state.wsProfile.messages?.orders
   );
+  const orders = feedOrders || profileOrders || [];
   const order = orders.find((item) => item._id === id);
-  const { isLoading, currentOrder } = useAppSelector(
+
+  const { isLoading, currentOrder, error } = useAppSelector(
     (state) => state.currentOrder
   );
+  const orderToDisplay = order || currentOrder;
 
   useEffect(() => {
-    if (!order) {
-      dispatch(getOrderById(String(id)));
+    if (!orderToDisplay && id && !isLoading) {
+      dispatch(getOrderById(id || ""));
     }
-  }, [order, id, dispatch]);
+  }, [orderToDisplay, id, isLoading, dispatch]);
 
-  if (order) {
-    return <OrderInfo item={order} />;
-  }
-
-  if (currentOrder) {
-    return <OrderInfo item={currentOrder} />;
+  if (orderToDisplay) {
+    return <OrderInfo item={orderToDisplay} />;
   }
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (error) {
+    return <div>Ошибка загрузки заказа: {error}</div>;
   }
 
   return <div>Такого заказа не существует</div>;

@@ -28,13 +28,14 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
 
   const status = useMemo(() => getOrderStatus(order), [order]);
 
-  const orderIngredients = useMemo(
-    () =>
-      order.ingredients.map((id: string) => {
-        return ingredients.find((item: Ingredient) => item._id === id);
-      }),
-    [ingredients, order]
-  );
+  const orderIngredients = useMemo(() => {
+    if (!ingredients || !order.ingredients) {
+      return [];
+    }
+    return order.ingredients.map((id: string) => {
+      return ingredients.find((item: Ingredient) => item._id === id);
+    });
+  }, [ingredients, order]);
 
   const total = useMemo(
     () => calculateOrderTotal(orderIngredients),
@@ -47,10 +48,18 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     [order]
   );
 
-  const displayedItems = useMemo(
-    () => orderIngredients.slice(0, MAX_VISIBLE_ITEMS),
-    [orderIngredients]
-  );
+  const displayedItems = useMemo(() => {
+    const uniqueItems = orderIngredients.reduce(
+      (acc: Ingredient[], item: Ingredient) => {
+        if (!acc.some((i) => i._id === item._id)) {
+          acc.push(item);
+        }
+        return acc;
+      },
+      []
+    );
+    return uniqueItems.slice(0, MAX_VISIBLE_ITEMS);
+  }, [orderIngredients]);
 
   const handleClickLink = () => {
     dispatch(setCurrentOrder(order));
