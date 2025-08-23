@@ -49,6 +49,9 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
   );
 
   const displayedItems = useMemo(() => {
+    if (orderIngredients?.length === 0) {
+      return [];
+    }
     const uniqueItems = orderIngredients.reduce(
       (acc: Ingredient[], item: Ingredient) => {
         if (!acc.some((i) => i._id === item._id)) {

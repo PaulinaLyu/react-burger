@@ -59,7 +59,10 @@ export const socketMiddleware = <MessageType = unknown>(
                 localStorage.setItem("refreshToken", refreshData.refreshToken);
 
               if (refreshData.accessToken) {
-                setCookie("accessToken", refreshData.accessToken);
+                setCookie(
+                  "accessToken",
+                  refreshData?.accessToken?.split("Bearer ")[1]
+                );
               }
 
               if (lastPayload) {

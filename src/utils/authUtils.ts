@@ -10,7 +10,6 @@ export const processAuthData = (payload: {
   const accessToken = payload.accessToken?.split("Bearer ")[1];
   const refreshToken = payload.refreshToken;
   const user = payload.user;
-
   if (accessToken) {
     setCookie("accessToken", accessToken);
   }
