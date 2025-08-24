@@ -1,20 +1,18 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import styles from "./order-info.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FeedItem, Ingredient, IngredientWithCount } from "../../models";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppSelector } from "../../hooks";
 import { calculateOrderTotal, getOrderStatus } from "../../utils";
-import { fetchBurgerIngredients } from "../../services/actions";
 
 interface IOrderInfoProps {
   item: FeedItem;
 }
 
 export const OrderInfo = ({ item }: IOrderInfoProps) => {
-  const dispatch = useAppDispatch();
   const { data: ingredients } = useAppSelector(
     (state) => state.burgerIngredients
   );
@@ -53,12 +51,6 @@ export const OrderInfo = ({ item }: IOrderInfoProps) => {
     () => calculateOrderTotal(orderIngredients),
     [orderIngredients]
   );
-
-  useEffect(() => {
-    if (!ingredients || ingredients?.length === 0) {
-      dispatch(fetchBurgerIngredients());
-    }
-  }, [dispatch, ingredients]);
 
   return (
     <main>

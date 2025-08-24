@@ -21,6 +21,7 @@ import { setCurrentIngredient } from "../../services/reducers/ingredient-details
 import { ProtectedRoute } from "../protected-route/protected-route";
 import { FeedPage } from "../../pages/feed-page";
 import { FeedOrderPage } from "../../pages/feed-order-page";
+import { fetchBurgerIngredients } from "../../services/actions";
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +32,10 @@ export const App = () => {
   useEffect(() => {
     dispatch(setCurrentIngredient(ingredient));
   }, [dispatch, ingredient]);
+
+  useEffect(() => {
+    dispatch(fetchBurgerIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>

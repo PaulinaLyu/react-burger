@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { OrdersFeed } from "../orders-feed";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { fetchBurgerIngredients } from "../../services/actions";
 
 import { Loader } from "../loader";
 import { ERROR_WS } from "../../contants";
@@ -14,7 +13,6 @@ export const ProfileOrders = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchBurgerIngredients());
     dispatch(profileWsActions.wsInit({ withToken: true }));
     return () => {
       dispatch(profileWsActions.wsEnd());

@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { ERROR_WS } from "../../contants";
 
 import { useEffect } from "react";
-import { fetchBurgerIngredients } from "../../services/actions";
 import { feedWsActions } from "../../services/wsSlices";
 
 export const FeedPage = () => {
@@ -14,7 +13,6 @@ export const FeedPage = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchBurgerIngredients());
     dispatch(feedWsActions.wsInit({}));
     return () => {
       dispatch(feedWsActions.wsEnd());
