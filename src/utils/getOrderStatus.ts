@@ -1,7 +1,7 @@
 import { FeedItem } from "../models";
 
-export const getOrderStatus = (order: FeedItem | null): string | null => {
-  if (!order) return null;
+export const getOrderStatus = (order: FeedItem | null): string => {
+  if (!order) return "";
   switch (order.status) {
     case "done":
       return "Выполнен";
