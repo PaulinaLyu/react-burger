@@ -9,17 +9,12 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import { BurgerTabs } from "../burger-tabs";
 import { BurgerIngredientCard } from "../burger-ingredient-card";
-import { IngredientDetails } from "../ingredient-details";
 import styles from "./burger-ingredients.module.css";
 import { categories } from "../../data/categories";
-import { Modal } from "../modal";
 import { Loader } from "../loader";
 import { NO_DATA } from "../../contants";
 import { IngredientType } from "../../data/categories";
-import { useAppSelector, useAppDispatch } from "../../hooks";
-import { resetCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
-import { RouterPaths } from "../../utils";
-import { setCurrentIngredient } from "../../services/reducers/ingredient-details.reducer";
+import { useAppSelector } from "../../hooks";
 import { Ingredient } from "../../models";
 
 type HeadersMap = Record<IngredientType, RefObject<HTMLHeadingElement | null>>;
@@ -30,12 +25,8 @@ export const BurgerIngredients = () => {
   const [currentTab, setCurrentTab] = useState<IngredientType>(
     IngredientType.BUN
   );
-  const dispatch = useAppDispatch();
   const { data, isLoading } = useAppSelector(
     (state) => state.burgerIngredients
-  );
-  const { currentIngredient } = useAppSelector(
-    (state) => state.ingredientDetails
   );
   const { bun, ingredients } = useAppSelector(
     (state) => state.burgerConstructor
@@ -73,15 +64,6 @@ export const BurgerIngredients = () => {
     headersRef.current[type]?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const hideDetailsModal = () => {
-    navigate(RouterPaths.MAIN, {
-      state: {
-        backgroundLocation: null,
-      },
-    });
-    dispatch(resetCurrentIngredient());
-  };
-
   const handleScroll = (e: React.UIEvent<HTMLElement>) => {
     const containerTop = e.currentTarget.getBoundingClientRect().top;
     const distance = [];
@@ -114,9 +96,8 @@ export const BurgerIngredients = () => {
           ingredient: ingredient,
         },
       });
-      dispatch(setCurrentIngredient(ingredient));
     },
-    [dispatch, navigate, location]
+    [navigate, location]
   );
 
   return (
@@ -153,11 +134,6 @@ export const BurgerIngredients = () => {
                       ))
                     : NO_DATA}
                 </ul>
-                {currentIngredient && (
-                  <Modal title="Детали ингридиента" onClose={hideDetailsModal}>
-                    <IngredientDetails item={currentIngredient} />
-                  </Modal>
-                )}
               </div>
             ))}
           </div>

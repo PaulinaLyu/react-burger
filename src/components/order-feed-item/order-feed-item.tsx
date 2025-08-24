@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import {
   CurrencyIcon,
   FormattedDate,
@@ -8,9 +8,8 @@ import { Link, useLocation } from "react-router";
 import styles from "./order-feed-item.module.css";
 import { FeedItem, Ingredient } from "../../models";
 
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppSelector } from "../../hooks";
 import { calculateOrderTotal, getOrderStatus } from "../../utils";
-import { setCurrentOrder } from "../../services/reducers/curent-order.reducer";
 
 interface IOrdersFeedItemProp {
   order: FeedItem;
@@ -79,7 +78,6 @@ const IngredientImage = ({
 
 export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
   const location = useLocation();
-  const dispatch = useAppDispatch();
   const { data: ingredients } = useAppSelector(
     (state) => state.burgerIngredients
   );
@@ -112,10 +110,6 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     return uniqueItems.slice(0, MAX_VISIBLE_ITEMS);
   }, [orderIngredients]);
 
-  const handleClickLink = useCallback(() => {
-    dispatch(setCurrentOrder(order));
-  }, [dispatch, order]);
-
   if (!order) {
     return <div className={`${styles.order} p-6 mb-6`}>Заказ не найден</div>;
   }
@@ -124,8 +118,7 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     <Link
       className={`${styles.order} p-6 mb-6`}
       to={`${location.pathname}/${order.number}`}
-      state={{ backgroundLocation: location }}
-      onClick={handleClickLink}
+      state={{ backgroundLocation: location, order: order }}
     >
       <OrderHeader order={order} />
 
