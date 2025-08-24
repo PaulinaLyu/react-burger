@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import {
   CurrencyIcon,
   FormattedDate,
@@ -19,6 +19,64 @@ interface IOrdersFeedItemProp {
 
 const MAX_VISIBLE_ITEMS = 6;
 
+const OrderHeader = ({ order }: { order: FeedItem }) => (
+  <div className={styles.header}>
+    <p className="text text_type_digits-default">#{order.number}</p>
+    <FormattedDate
+      date={new Date(order.createdAt)}
+      className="text text_type_main-default text_color_inactive"
+    />
+  </div>
+);
+
+const OrderStatus = ({
+  order,
+  isUser,
+}: {
+  order: FeedItem;
+  isUser?: boolean;
+}) => {
+  const status = useMemo(() => getOrderStatus(order), [order]);
+  const color =
+    order.status === "done" ? styles.status_done : styles.status_default;
+
+  if (!isUser || !status) return null;
+
+  return (
+    <p className={`${color} mt-2 text text_type_main-default`}>{status}</p>
+  );
+};
+
+const IngredientImage = ({
+  item,
+  index,
+  totalIngredients,
+}: {
+  item: Ingredient;
+  index: number;
+  totalIngredients: number;
+}) => {
+  const hiddenCount = totalIngredients - MAX_VISIBLE_ITEMS;
+  const isLastVisible = index === MAX_VISIBLE_ITEMS - 1;
+  const shouldShowOverlay = isLastVisible && hiddenCount > 0;
+
+  return (
+    <li style={{ marginRight: -20 }} className={styles.image}>
+      <img
+        style={{ opacity: shouldShowOverlay ? "0.4" : "1" }}
+        src={item.image_mobile}
+        alt={item.name}
+        className={styles.image_position}
+      />
+      {shouldShowOverlay && (
+        <span className={`${styles.count_hidden} text text_type_main-default`}>
+          +{hiddenCount}
+        </span>
+      )}
+    </li>
+  );
+};
+
 export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -26,15 +84,14 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     (state) => state.burgerIngredients
   );
 
-  const status = useMemo(() => getOrderStatus(order), [order]);
-
   const orderIngredients = useMemo(() => {
-    if (!ingredients || !order.ingredients) {
-      return [];
-    }
-    return order.ingredients.map((id: string) => {
-      return ingredients.find((item: Ingredient) => item._id === id);
-    });
+    if (!ingredients || !order.ingredients) return [];
+
+    return order.ingredients
+      .map((id: string) =>
+        ingredients.find((item: Ingredient) => item._id === id)
+      )
+      .filter((item): item is Ingredient => item !== undefined);
   }, [ingredients, order]);
 
   const total = useMemo(
@@ -42,16 +99,7 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     [orderIngredients]
   );
 
-  const color = useMemo(
-    () =>
-      order.status === "done" ? styles.status_done : styles.status_default,
-    [order]
-  );
-
   const displayedItems = useMemo(() => {
-    if (orderIngredients?.length === 0) {
-      return [];
-    }
     const uniqueItems = orderIngredients.reduce(
       (acc: Ingredient[], item: Ingredient) => {
         if (!acc.some((i) => i._id === item._id)) {
@@ -64,9 +112,13 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
     return uniqueItems.slice(0, MAX_VISIBLE_ITEMS);
   }, [orderIngredients]);
 
-  const handleClickLink = () => {
+  const handleClickLink = useCallback(() => {
     dispatch(setCurrentOrder(order));
-  };
+  }, [dispatch, order]);
+
+  if (!order) {
+    return <div className={`${styles.order} p-6 mb-6`}>Заказ не найден</div>;
+  }
 
   return (
     <Link
@@ -75,55 +127,26 @@ export const OrderFeedItem = ({ order, isUser }: IOrdersFeedItemProp) => {
       state={{ backgroundLocation: location }}
       onClick={handleClickLink}
     >
-      <div className={styles.header}>
-        <p className="text text_type_digits-default">#{order.number}</p>
-        <FormattedDate
-          date={new Date(order.createdAt)}
-          className="text text_type_main-default text_color_inactive"
-        />
-      </div>
+      <OrderHeader order={order} />
 
-      <p className={`mt-4 text text_type_main-medium`}>{order.name}</p>
-      {isUser && status && (
-        <p className={`${color} text text_type_main-default`}>{status}</p>
-      )}
+      <p className="mt-4 text text_type_main-medium">{order.name}</p>
+
+      <OrderStatus order={order} isUser={isUser} />
+
       <div className={styles.wrapper}>
-        <div className={styles.ingredients}>
-          {displayedItems &&
-            displayedItems.map((item: Ingredient | undefined, i: number) => {
-              const right = -20;
-              const hiddenCount = order.ingredients.length - MAX_VISIBLE_ITEMS;
+        <ul className={styles.ingredients}>
+          {displayedItems.map((item, index) => (
+            <IngredientImage
+              key={item._id}
+              item={item}
+              index={index}
+              totalIngredients={order.ingredients.length}
+            />
+          ))}
+        </ul>
 
-              return (
-                <li
-                  key={item?._id}
-                  style={{ marginRight: right }}
-                  className={styles.image}
-                >
-                  <img
-                    style={{
-                      opacity:
-                        MAX_VISIBLE_ITEMS === i + 1 && hiddenCount > 0
-                          ? "0.4"
-                          : "1",
-                    }}
-                    src={item?.image_mobile}
-                    alt={item?.name}
-                    className={styles.image_position}
-                  />
-                  {hiddenCount > 0 && i === MAX_VISIBLE_ITEMS - 1 && (
-                    <span
-                      className={`${styles.count_hidden} text text_type_main-default`}
-                    >
-                      +{hiddenCount}
-                    </span>
-                  )}
-                </li>
-              );
-            })}
-        </div>
         <div className={styles.price}>
-          <span className={`text text_type_digits-default`}>{total}</span>
+          <span className="text text_type_digits-default">{total}</span>
           <CurrencyIcon type="primary" />
         </div>
       </div>
