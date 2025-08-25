@@ -16,3 +16,7 @@ export interface Ingredient {
 export interface IngredientWithUniqueId extends Ingredient {
   uniqueId: string;
 }
+
+export interface IngredientWithCount extends Ingredient {
+  count: number;
+}

@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { ERROR_LOADING_BURGER_INGREDIENTS } from "../../contants";
 
 export interface BurgerIngredientsState {
-  data: any;
+  data: Ingredient[];
   isLoading: boolean;
 }
 

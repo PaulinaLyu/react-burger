@@ -1,0 +1,14 @@
+.container {
+  height: calc(100vh - var(--header-height));
+  width: 100%;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.col {
+  width: 50%;
+}

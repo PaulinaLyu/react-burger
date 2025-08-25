@@ -3,5 +3,7 @@ export { AppHeader } from "./app-header";
 export { BurgerIngredients } from "./burger-ingredients";
 export { BurgerConstructor } from "./burger-constructor";
 export { Modal } from "./modal";
+export { OrdersStatus } from "./orders-status";
+export { OrdersFeed } from "./orders-feed";
 export { Loader } from "./loader";
 export { ErrorBoundary } from "./error-boundary";

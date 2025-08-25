@@ -8,6 +8,7 @@ import {
 import { NavGroup } from "../nav-group";
 import styles from "./app-header.module.css";
 import { RouterPaths } from "../../utils";
+import { Link } from "react-router";
 
 const navLinks = [
   {
@@ -17,7 +18,7 @@ const navLinks = [
     position: "left",
   },
   {
-    href: "/orders",
+    href: RouterPaths.FEED,
     icon: ListIcon,
     label: "Лента заказов",
     position: "left",
@@ -37,7 +38,10 @@ export const AppHeader = () => {
         position="left"
         navLinks={navLinks.filter((link) => link.position === "left")}
       />
-      <Logo />
+      <Link to={RouterPaths.MAIN}>
+        {" "}
+        <Logo />
+      </Link>
       <NavGroup
         position="right"
         navLinks={navLinks.filter((link) => link.position === "right")}
