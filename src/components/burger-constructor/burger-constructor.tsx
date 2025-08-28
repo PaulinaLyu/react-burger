@@ -22,7 +22,7 @@ import {
   resetConstructor,
 } from "../../services/reducers/burger-constructor.reducer";
 import { RouterPaths } from "../../utils";
-import { resetOrder } from "../../services/reducers/order.reducer";
+import { resetOrder } from "../../services/reducers/order/order.reducer";
 import { createBurgerOrder } from "../../services/actions";
 import { userStorageService } from "../../services/userStorageService";
 import { Ingredient } from "../../models";

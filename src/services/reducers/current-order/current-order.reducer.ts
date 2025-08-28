@@ -5,10 +5,10 @@ import {
   isRejected,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { FeedItem } from "../../models";
-import { getOrderById } from "../actions";
+import { FeedItem } from "../../../models";
+import { getOrderById } from "../../actions";
 import { toast } from "react-toastify";
-import { ERROR_CURRENT_ORDER } from "../../contants";
+import { ERROR_CURRENT_ORDER } from "../../../contants";
 
 export interface CurrentOrderState {
   currentOrder: FeedItem | null;
