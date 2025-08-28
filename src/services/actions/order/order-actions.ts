@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { createOrder } from "../../api";
-import { fetchOrderById } from "../../api/order";
-import { FeedItem } from "../../models";
+import { createOrder } from "../../../api";
+import { fetchOrderById } from "../../../api/order";
+import { FeedItem } from "../../../models";
 
 export const createBurgerOrder = createAsyncThunk<number, string[]>(
   "data/createOrder",
