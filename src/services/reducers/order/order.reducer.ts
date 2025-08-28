@@ -5,9 +5,9 @@ import {
   isRejected,
 } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createBurgerOrder } from "../actions/order-actions";
+import { createBurgerOrder } from "../../actions/order/order-actions";
 import { toast } from "react-toastify";
-import { ERROR_PLACE_ORDER } from "../../contants";
+import { ERROR_PLACE_ORDER } from "../../../contants";
 
 export interface OrderState {
   orderNumber: number | null;

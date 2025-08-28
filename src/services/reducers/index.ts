@@ -3,7 +3,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import burgerIngredientsReducer from "./burger-ingredients.reducer";
 import burgerConstructorReducer from "./burger-constructor.reducer";
 import currentOrderReducer from "./curent-order.reducer";
-import orderReducer from "./order.reducer";
+import orderReducer from "./order/order.reducer";
 import authReducer from "./auth.reducer";
 import { feedWs, profileWs } from "../wsSlices";
 
