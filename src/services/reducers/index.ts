@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { PayloadAction } from "@reduxjs/toolkit";
-import burgerIngredientsReducer from "./burger-ingredients.reducer";
+import burgerIngredientsReducer from "./burger-ingredients/burger-ingredients.reducer";
 import burgerConstructorReducer from "./burger-constructor/burger-constructor.reducer";
 import currentOrderReducer from "./current-order/current-order.reducer";
 import orderReducer from "./order/order.reducer";
