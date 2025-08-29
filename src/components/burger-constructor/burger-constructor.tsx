@@ -20,7 +20,7 @@ import {
   addIngredient,
   removeIngredient,
   resetConstructor,
-} from "../../services/reducers/burger-constructor.reducer";
+} from "../../services/reducers/burger-constructor/burger-constructor.reducer";
 import { RouterPaths } from "../../utils";
 import { resetOrder } from "../../services/reducers/order/order.reducer";
 import { createBurgerOrder } from "../../services/actions";

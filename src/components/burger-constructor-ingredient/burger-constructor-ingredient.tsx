@@ -6,7 +6,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor-ingredient.module.css";
-import { swapIngredients } from "../../services/reducers/burger-constructor.reducer";
+import { swapIngredients } from "../../services/reducers/burger-constructor/burger-constructor.reducer";
 import { IngredientWithUniqueId } from "../../models";
 
 interface IBurgerConstructorIngredient {
