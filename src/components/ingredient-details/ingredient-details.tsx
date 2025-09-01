@@ -21,7 +21,10 @@ export const IngredientDetails = ({ item }: IIngredientDetailsProps) => {
           src={item.image_large}
           alt={`Изображение ингредиента ${item.name}`}
         />
-        <figcaption className="text text_type_main-medium mb-8">
+        <figcaption
+          data-testid="figcaption-ingredient-name"
+          className="text text_type_main-medium mb-8"
+        >
           {item.name}
         </figcaption>
       </figure>

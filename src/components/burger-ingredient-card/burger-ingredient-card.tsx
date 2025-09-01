@@ -50,7 +50,10 @@ export const BurgerIngredientCard = ({
         <span className="text text_type_digits-default mr-2">{item.price}</span>
         <CurrencyIcon type="primary" />
       </div>
-      <div className={`${styles.title} text text_type_main-default`}>
+      <div
+        data-testid="card-ingredient-name"
+        className={`${styles.title} text text_type_main-default`}
+      >
         {item.name}
       </div>
       {count > 0 && (
