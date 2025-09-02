@@ -103,6 +103,7 @@ export const BurgerConstructor = () => {
     bun: Ingredient
   ) => (
     <ConstructorElement
+      data-testid="constructor-bun-top"
       type={type}
       isLocked={true}
       text={`${bun.name} (${label})`}
@@ -129,6 +130,7 @@ export const BurgerConstructor = () => {
             renderBun("top", "верх", bun)
           ) : (
             <EmptyBurgerConstructorElement
+              dataTestId="empty-constructor-bun-top"
               position="top"
               text="Выберите булку"
             />
@@ -146,7 +148,10 @@ export const BurgerConstructor = () => {
               </Fragment>
             ))
           ) : (
-            <EmptyBurgerConstructorElement text="Выберите соус или начинку" />
+            <EmptyBurgerConstructorElement
+              dataTestId="empty-constructor-ingredient"
+              text="Выберите соус или начинку"
+            />
           )}
         </ul>
         <div ref={bunBottomRef}>
@@ -162,12 +167,18 @@ export const BurgerConstructor = () => {
       </div>
 
       <div className={`${styles.total} mt-10 mb-10`}>
-        <div className="text text_type_digits-medium mb-1">{totalPrice}</div>
+        <div
+          data-testid="total-price"
+          className="text text_type_digits-medium mb-1"
+        >
+          {totalPrice}
+        </div>
         <div className={`${styles.icon} ml-5 mr-10`}>
           <CurrencyIcon type="primary" />
         </div>
         {bun && ingredients?.length > 0 && (
           <Button
+            data-testid="place-order-btn"
             htmlType="button"
             type="primary"
             onClick={() => createNewOrder(bun._id)}

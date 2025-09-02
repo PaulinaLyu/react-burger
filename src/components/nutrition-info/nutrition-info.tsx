@@ -4,7 +4,7 @@ interface INutritionInfoProps {
 }
 
 export const NutritionInfo = ({ label, value }: INutritionInfoProps) => (
-  <div>
+  <div data-testid="nutrition">
     <p className="text text_type_main-default text_color_inactive mb-2">
       {label}
     </p>

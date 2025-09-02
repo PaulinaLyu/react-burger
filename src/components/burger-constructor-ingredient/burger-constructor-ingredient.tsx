@@ -40,7 +40,11 @@ export const BurgerConstructorIngredient = ({
   drag(drop(ref));
 
   return (
-    <li className={`${styles.item} mt-4`} ref={ref}>
+    <li
+      data-testid="constructor-ingredient"
+      className={`${styles.item} mt-4`}
+      ref={ref}
+    >
       <DragIcon type="primary" />
       <ConstructorElement
         text={item.name}

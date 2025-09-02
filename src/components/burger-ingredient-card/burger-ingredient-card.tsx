@@ -40,6 +40,7 @@ export const BurgerIngredientCard = ({
       onClick={onClick}
       ref={cardDragRef}
       data-testid="ingredient-card"
+      data-ingredient-type={item.type}
     >
       <img
         className={`${styles.image} ml-4 mr-4 mb-1`}
