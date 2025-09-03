@@ -1,3 +1,5 @@
+import { DOMAIN, INGREDIENTS_API } from "./../../src/api/constants";
+
 const SELECTORS = {
   INGREDIENT_CARD: '[data-testid="ingredient-card"]',
   MODAL: '[data-testid="modal"]',
@@ -9,7 +11,11 @@ const SELECTORS = {
 
 describe("Модальное окно ингредиента", () => {
   beforeEach(() => {
+    cy.intercept("GET", `${DOMAIN}${INGREDIENTS_API}`, {
+      fixture: "ingredients.json",
+    }).as("getIngredients");
     cy.visit("/");
+    cy.wait("@getIngredients");
     cy.get(SELECTORS.INGREDIENT_CARD).first().as("firstIngredient");
   });
 
