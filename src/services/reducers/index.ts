@@ -4,7 +4,7 @@ import burgerIngredientsReducer from "./burger-ingredients/burger-ingredients.re
 import burgerConstructorReducer from "./burger-constructor/burger-constructor.reducer";
 import currentOrderReducer from "./current-order/current-order.reducer";
 import orderReducer from "./order/order.reducer";
-import authReducer from "./auth.reducer";
+import authReducer from "./auth/auth.reducer";
 import { feedWs, profileWs } from "../wsSlices";
 
 export type RootState = {

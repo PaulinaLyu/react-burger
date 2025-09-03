@@ -5,7 +5,7 @@ import {
   isRejected,
 } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { ERROR_LOGIN, ERROR_REGISTRATION } from "../../contants";
+import { ERROR_LOGIN, ERROR_REGISTRATION } from "../../../contants";
 import {
   registerUserThunk,
   loginUserThunk,
@@ -13,7 +13,7 @@ import {
   updateUserThunk,
   getUserThunk,
   approvedResetPasswordThunk,
-} from "../actions/auth-actions";
+} from "../../actions/auth/auth-actions";
 
 export interface AuthState {
   isLoading: boolean;

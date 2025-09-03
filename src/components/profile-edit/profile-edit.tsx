@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Loader } from "../loader";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks";
-import { updateUserThunk } from "../../services/actions/auth-actions";
+import { updateUserThunk } from "../../services/actions/auth/auth-actions";
 import { userStorageService } from "../../services/userStorageService";
 
 export const ProfileEdit = () => {

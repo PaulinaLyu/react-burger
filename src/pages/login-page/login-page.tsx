@@ -7,7 +7,7 @@ import { Loader } from "../../components";
 import { Link, useNavigate, Navigate } from "react-router";
 import { RouterPaths } from "../../utils";
 import { useAppDispatch, useForm, useAppSelector } from "../../hooks";
-import { loginUserThunk } from "../../services/actions/auth-actions";
+import { loginUserThunk } from "../../services/actions/auth/auth-actions";
 import { userStorageService } from "../../services/userStorageService";
 
 export const LoginPage = () => {
@@ -35,18 +35,21 @@ export const LoginPage = () => {
     <form className="text-align-center" onSubmit={handleSubmit}>
       <h1 className="text text_type_main-medium mb-6">Вход</h1>
       <EmailInput
+        data-testid="email-input"
         extraClass="mb-6"
         name="email"
         value={values.email}
         onChange={handleChange}
       />
       <PasswordInput
+        data-testid="password-input"
         extraClass="mb-6"
         name="password"
         value={values.password}
         onChange={handleChange}
       />
       <Button
+        data-testid="login-btn"
         type="primary"
         extraClass="mb-20"
         htmlType="submit"

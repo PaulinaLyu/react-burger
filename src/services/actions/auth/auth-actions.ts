@@ -6,7 +6,7 @@ import {
   IProfileEditForm,
   IRegisterForm,
   IResetPasswordForm,
-} from "./../../types";
+} from "../../../types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   registerUser,
@@ -16,10 +16,10 @@ import {
   loginUser,
   approvedResetPassword,
   logoutUser,
-} from "../../api";
-import { processAuthData } from "../../utils/authUtils";
-import { userStorageService } from "../userStorageService";
-import { deleteCookie } from "../../utils";
+} from "../../../api";
+import { processAuthData } from "../../../utils/authUtils";
+import { userStorageService } from "../../userStorageService";
+import { deleteCookie } from "../../../utils";
 
 export const logoutUserThunk = createAsyncThunk(
   "data/logoutUser",

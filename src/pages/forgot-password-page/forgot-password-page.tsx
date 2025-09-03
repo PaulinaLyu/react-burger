@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch } from "../../hooks";
 import { useForm } from "../../hooks/useForm";
-import { resetPasswordThunk } from "../../services/actions/auth-actions";
+import { resetPasswordThunk } from "../../services/actions/auth/auth-actions";
 import { userStorageService } from "../../services/userStorageService";
 
 export const ForgotPasswordPage = () => {
