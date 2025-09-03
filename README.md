@@ -2,6 +2,10 @@
 
 Проект выполнен в рамках обучения на платформе [Яндекс.Практикум](https://praktikum.yandex.ru/). Это одностраничное приложение для сбора бургера из ингредиентов с возможностью оформления заказа. Приложение написано с использованием React, TypeScript и библиотеки компонентов `@ya.praktikum/react-developer-burger-ui-components`.
 
+## Деплой проекта на GitHub Pages
+
+https://paulinalyu.github.io/react-burger/
+
 ## Запуск проекта
 
 ```bash
@@ -20,21 +24,22 @@ npx create-react-app my-app --template typescript
 ## Структура проекта
 
 <b> `components/` </b> — все UI-компоненты и их стили:
- - <i> `App` </i>
 
- - <i> `AppHeader` </i>
+- <i> `App` </i>
 
- - <i> `BurgerIngredients` </i>
+- <i> `AppHeader` </i>
 
- - <i> `BurgerConstructor` </i>
+- <i> `BurgerIngredients` </i>
 
- - <i> `Modal` </i>
+- <i> `BurgerConstructor` </i>
 
- - <i> `ModalOverlay` </i>
+- <i> `Modal` </i>
 
- - <i> `OrderDetails` </i>
+- <i> `ModalOverlay` </i>
 
- - <i> `IngredientDetails` </i>
+- <i> `OrderDetails` </i>
+
+- <i> `IngredientDetails` </i>
 
 <b> `fonts/` </b> — сторонние шрифты
 
@@ -49,7 +54,6 @@ npx create-react-app my-app --template typescript
 <b> `README.md` </b>
 
 <b> `.gitignore` </b>
-
 
 ## Основной функционал
 
