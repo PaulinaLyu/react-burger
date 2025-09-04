@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
-export type {} from "../support/commands";
-import { DOMAIN, LOGIN_API, ORDER_API } from "./../../src/api/constants";
+
+import { DOMAIN, LOGIN_API, ORDER_API } from "../../src/api/constants";
 import { IngredientType } from "../../src/data/categories";
 
 const SELECTORS = {
@@ -27,10 +27,7 @@ const SELECTORS = {
 };
 
 describe("Создание заказа", () => {
-  const dragIngredientToConstructor = (
-    ingredientType: IngredientType,
-    targetType: any
-  ) => {
+  const dragIngredientToConstructor = (ingredientType, targetType) => {
     const ingredientSelector =
       ingredientType === IngredientType.BUN
         ? `${SELECTORS.INGREDIENT_CARD}[data-ingredient-type="bun"]:first-child`
@@ -52,7 +49,7 @@ describe("Создание заказа", () => {
     );
   };
 
-  const expectTotalPrice = (expectedPrice: string) => {
+  const expectTotalPrice = (expectedPrice) => {
     cy.get(SELECTORS.TOTAL_PRICE).should("contain", expectedPrice);
   };
 
