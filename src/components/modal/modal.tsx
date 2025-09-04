@@ -20,13 +20,21 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = ({
   if (!modalRoot) return null;
 
   return ReactDOM.createPortal(
-    <section className={styles.modal} role="dialog" aria-modal="true">
+    <section
+      data-testid="modal"
+      className={styles.modal}
+      role="dialog"
+      aria-modal="true"
+    >
       <article className={`${styles.content} pl-10 pr-10 pt-10`}>
         <header className={`${styles.header}`}>
-          <h6 className={`${styles.title} text text_type_main-large`}>
+          <h6
+            data-testid="modal-title"
+            className={`${styles.title} text text_type_main-large`}
+          >
             {title}
           </h6>
-          <div className={styles.close}>
+          <div data-testid="modal-close-button" className={styles.close}>
             <CloseIcon
               type="primary"
               onClick={onClose}

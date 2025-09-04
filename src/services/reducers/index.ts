@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import { PayloadAction } from "@reduxjs/toolkit";
-import burgerIngredientsReducer from "./burger-ingredients.reducer";
-import burgerConstructorReducer from "./burger-constructor.reducer";
-import currentOrderReducer from "./curent-order.reducer";
-import orderReducer from "./order.reducer";
-import authReducer from "./auth.reducer";
+import burgerIngredientsReducer from "./burger-ingredients/burger-ingredients.reducer";
+import burgerConstructorReducer from "./burger-constructor/burger-constructor.reducer";
+import currentOrderReducer from "./current-order/current-order.reducer";
+import orderReducer from "./order/order.reducer";
+import authReducer from "./auth/auth.reducer";
 import { feedWs, profileWs } from "../wsSlices";
 
 export type RootState = {

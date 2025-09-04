@@ -1,7 +1,7 @@
 import { Outlet, NavLink, useNavigate } from "react-router";
 import { RouterPaths } from "../../utils";
 import { useAppDispatch } from "../../hooks";
-import { logoutUserThunk } from "../../services/actions/auth-actions";
+import { logoutUserThunk } from "../../services/actions/auth/auth-actions";
 import styles from "./profile-page.module.css";
 
 const navItems = [

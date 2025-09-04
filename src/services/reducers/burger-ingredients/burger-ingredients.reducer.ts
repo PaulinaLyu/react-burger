@@ -5,10 +5,10 @@ import {
   isRejected,
 } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { fetchBurgerIngredients } from "../actions/burger-ingredients-actions";
-import { Ingredient } from "../../models";
+import { fetchBurgerIngredients } from "../../actions/burger-ingredients/burger-ingredients-actions";
+import { Ingredient } from "../../../models";
 import { toast } from "react-toastify";
-import { ERROR_LOADING_BURGER_INGREDIENTS } from "../../contants";
+import { ERROR_LOADING_BURGER_INGREDIENTS } from "../../../contants";
 
 export interface BurgerIngredientsState {
   data: Ingredient[];

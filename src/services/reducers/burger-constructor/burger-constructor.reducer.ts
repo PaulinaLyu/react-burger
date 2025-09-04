@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Ingredient, IngredientWithUniqueId } from "../../models";
+import { Ingredient, IngredientWithUniqueId } from "../../../models";
 import uuid4 from "uuid4";
 
 export interface BurgerConstructorState {

@@ -7,7 +7,7 @@ import { RouterPaths } from "../../utils";
 import { useAppDispatch } from "../../hooks";
 import { useForm } from "../../hooks/useForm";
 import { Link, Navigate, useNavigate, useLocation } from "react-router";
-import { approvedResetPasswordThunk } from "../../services/actions/auth-actions";
+import { approvedResetPasswordThunk } from "../../services/actions/auth/auth-actions";
 import { userStorageService } from "../../services/userStorageService";
 
 export const ResetPasswordPage = () => {

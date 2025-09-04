@@ -3,11 +3,13 @@ import styles from "./empty-burger-constructor-element.module.css";
 interface IEmptyBurgerConstructorElementProps {
   position?: "top" | "bottom";
   text: string;
+  dataTestId?: string;
 }
 
 export const EmptyBurgerConstructorElement = ({
   position,
   text,
+  dataTestId,
 }: IEmptyBurgerConstructorElementProps) => {
   const posClass =
     position === "top"
@@ -17,7 +19,10 @@ export const EmptyBurgerConstructorElement = ({
       : "";
 
   return (
-    <div className={`${styles.container} constructor-element ${posClass} ml-8`}>
+    <div
+      data-testid={dataTestId}
+      className={`${styles.container} constructor-element ${posClass} ml-8`}
+    >
       <div className="text text_type_main-default">{text}</div>
     </div>
   );

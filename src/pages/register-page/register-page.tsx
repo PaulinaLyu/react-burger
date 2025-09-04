@@ -8,7 +8,7 @@ import { Loader } from "../../components/loader";
 import { RouterPaths } from "../../utils";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks";
 import { Link, useNavigate, Navigate } from "react-router";
-import { registerUserThunk } from "../../services/actions/auth-actions";
+import { registerUserThunk } from "../../services/actions/auth/auth-actions";
 import { userStorageService } from "../../services/userStorageService";
 
 export const RegisterPage = () => {

@@ -8,8 +8,11 @@ interface IOrderDetailsProps {
 export const OrderDetails = ({ orderNumber }: IOrderDetailsProps) => {
   return (
     <>
-      <main className="mb-15">
-        <h2 className={`${styles.glow} text text_type_digits-large mb-8 mt-8`}>
+      <main data-testid="order-modal" className="mb-15">
+        <h2
+          data-testid="order-number"
+          className={`${styles.glow} text text_type_digits-large mb-8 mt-8`}
+        >
           {orderNumber}
         </h2>
         <p className="text text_type_main-medium mb-15">идентификатор заказа</p>

@@ -39,6 +39,8 @@ export const BurgerIngredientCard = ({
       className={`${styles.card} mt-6 mb-8 ml-3 mr-2`}
       onClick={onClick}
       ref={cardDragRef}
+      data-testid="ingredient-card"
+      data-ingredient-type={item.type}
     >
       <img
         className={`${styles.image} ml-4 mr-4 mb-1`}
@@ -49,7 +51,10 @@ export const BurgerIngredientCard = ({
         <span className="text text_type_digits-default mr-2">{item.price}</span>
         <CurrencyIcon type="primary" />
       </div>
-      <div className={`${styles.title} text text_type_main-default`}>
+      <div
+        data-testid="card-ingredient-name"
+        className={`${styles.title} text text_type_main-default`}
+      >
         {item.name}
       </div>
       {count > 0 && (

@@ -113,7 +113,7 @@ export const App = () => {
             path={RouterPaths.INGREDIENTS}
             element={
               <Modal
-                title="Детали ингридиента"
+                title="Детали ингредиента"
                 onClose={hideIngredientDetailsModal}
               >
                 <IngredientDetails item={ingredient} />
