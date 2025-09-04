@@ -1,4 +1,7 @@
 /// <reference types="cypress" />
+
+import { DOMAIN, INGREDIENTS_API } from "../../src/api/constants";
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -35,3 +38,9 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add("interceptIngredients", function () {
+  cy.intercept("GET", `${DOMAIN}${INGREDIENTS_API}`, {
+    fixture: "ingredients.json",
+  }).as("getIngredients");
+});

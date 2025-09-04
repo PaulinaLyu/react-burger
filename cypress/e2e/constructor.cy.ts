@@ -1,9 +1,6 @@
-import {
-  DOMAIN,
-  INGREDIENTS_API,
-  LOGIN_API,
-  ORDER_API,
-} from "./../../src/api/constants";
+/// <reference types="cypress" />
+export type {} from "../support/commands";
+import { DOMAIN, LOGIN_API, ORDER_API } from "./../../src/api/constants";
 import { IngredientType } from "../../src/data/categories";
 
 const SELECTORS = {
@@ -60,9 +57,7 @@ describe("Создание заказа", () => {
   };
 
   beforeEach(() => {
-    cy.intercept("GET", `${DOMAIN}${INGREDIENTS_API}`, {
-      fixture: "ingredients.json",
-    }).as("getIngredients");
+    cy.interceptIngredients();
 
     cy.visit("/");
 
